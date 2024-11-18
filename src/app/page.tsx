@@ -7,6 +7,8 @@ import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import QuestionBankList from "@/components/QuestionBankList";
 import QuestionList from "@/components/QuestionList";
 import "./index.css";
+import {VALUE} from "@typescript-eslint/scope-manager/dist/lib/base-config";
+import VIPTag from "@/components/VIPTag";
 
 /**
  * 主页
@@ -49,6 +51,8 @@ export default async function HomePage() {
         <Title level={3}>最新题目</Title>
         <Link href={"/questions"}>查看更多</Link>
       </Flex>
+
+
       <QuestionList questionList={questionList} />
     </div>
   );
