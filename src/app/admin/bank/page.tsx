@@ -8,9 +8,9 @@ import {
 import { PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Space, Typography } from "antd";
+import { Button, message, Modal, Space, Typography } from "antd";
 import React, { useRef, useState } from "react";
-import './index.css';
+import "./index.css";
 
 /**
  * 题库管理页面
@@ -32,21 +32,28 @@ const QuestionBankAdminPage: React.FC = () => {
    * @param row
    */
   const handleDelete = async (row: API.QuestionBank) => {
-    const hide = message.loading("正在删除");
-    if (!row) return true;
-    try {
-      await deleteQuestionBankUsingPost({
-        id: row.id as any,
-      });
-      hide();
-      message.success("删除成功");
-      actionRef?.current?.reload();
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error("删除失败，" + error.message);
-      return false;
-    }
+    // 显示确认对话框
+    Modal.confirm({
+      title: "确认删除",
+      content: "确定要删除该用户吗？",
+      onOk: async () => {
+        if (!row) return true;
+        try {
+          await deleteQuestionBankUsingPost({
+            id: row.id as any,
+          });
+          message.success("删除成功");
+          actionRef?.current?.reload();
+          return true;
+        } catch (error: any) {
+          message.error("删除失败，" + error.message);
+          return false;
+        }
+      },
+      onCancel() {
+        message.info("已取消删除");
+      },
+    });
   };
 
   /**
@@ -108,17 +115,18 @@ const QuestionBankAdminPage: React.FC = () => {
       valueType: "option",
       render: (_, record) => (
         <Space size="middle">
-          <Typography.Link
+          <Button
+            style={{ color: "rgba(26,78,171,0.94)" }}
             onClick={() => {
               setCurrentRow(record);
               setUpdateModalVisible(true);
             }}
           >
             修改
-          </Typography.Link>
-          <Typography.Link type="danger" onClick={() => handleDelete(record)}>
+          </Button>
+          <Button type="dashed" danger onClick={() => handleDelete(record)}>
             删除
-          </Typography.Link>
+          </Button>
         </Space>
       ),
     },
@@ -127,7 +135,7 @@ const QuestionBankAdminPage: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.QuestionBank>
-        headerTitle={"查询表格"}
+        headerTitle={"题库管理表格"}
         actionRef={actionRef}
         rowKey="key"
         search={{
@@ -162,6 +170,9 @@ const QuestionBankAdminPage: React.FC = () => {
           };
         }}
         columns={columns}
+        pagination={{
+          pageSize: 6, // 每页显示5条记录
+        }}
       />
       <CreateModal
         visible={createModalVisible}

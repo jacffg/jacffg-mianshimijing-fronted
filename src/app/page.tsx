@@ -7,8 +7,10 @@ import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import QuestionBankList from "@/components/QuestionBankList";
 import QuestionList from "@/components/QuestionList";
 import "./index.css";
-import {VALUE} from "@typescript-eslint/scope-manager/dist/lib/base-config";
+import { VALUE } from "@typescript-eslint/scope-manager/dist/lib/base-config";
 import VIPTag from "@/components/VIPTag";
+import Test from "../components/questionSearchForm";
+import QuestionTablePlus from "@/components/QuestionTablePlus";
 
 /**
  * 主页
@@ -48,11 +50,8 @@ export default async function HomePage() {
       <QuestionBankList questionBankList={questionBankList} />
       <Divider />
       <Flex justify="space-between" align="center">
-        <Title level={3}>最新题目</Title>
-        <Link href={"/questions"}>查看更多</Link>
+        <Title level={3}>面试题目</Title>
       </Flex>
-
-
       <QuestionList questionList={questionList} />
     </div>
   );

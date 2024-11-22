@@ -4,9 +4,10 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { ProTable } from "@ant-design/pro-components";
 import React, { useRef, useState } from "react";
 import TagList from "@/components/TagList";
-import { TablePaginationConfig } from "antd";
+import { Space, TablePaginationConfig } from "antd";
 import Link from "next/link";
 import "./index.css";
+import VIPTag from "@/components/VIPTag";
 
 interface Props {
   // 默认值（用于展示服务端渲染的数据）
@@ -52,9 +53,14 @@ const QuestionTable: React.FC = (props: Props) => {
       fieldProps: {
         mode: "tags",
       },
-      render: (_, record) => {
-        return <TagList tagList={record.tagList} />;
-      },
+      render: (_, record) => (
+        <Space>
+          <>
+            {!record?.isvip && <VIPTag />}
+            <TagList tagList={record.tagList} />
+          </>
+        </Space>
+      ),
     },
   ];
 

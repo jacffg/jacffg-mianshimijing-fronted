@@ -1,3 +1,26 @@
 .tag-list {
 
 }
+/* index.css */
+
+.tag-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px; /* 标签之间的间距 */
+    margin: 16px 0; /* 上下外边距 */
+}
+
+.custom-tag {
+    background-color: #f8f7f8; /* 背景颜色 */
+    color: #ef9e9e; /* 文字颜色 */
+    border: none; /* 移除默认边框 */
+    border-radius: 4px; /* 圆角 */
+    padding: 4px 8px; /* 内边距 */
+    font-size: 14px; /* 字体大小 */
+    cursor: pointer; /* 鼠标悬停时变为手指形状 */
+    transition: background-color 0.3s; /* 平滑过渡效果 */
+}
+
+.custom-tag:hover {
+    background-color: #7da4ee; /* 鼠标悬停时的背景颜色 */
+}

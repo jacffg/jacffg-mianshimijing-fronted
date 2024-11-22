@@ -410,9 +410,11 @@ declare namespace API {
     answer?: string;
     content?: string;
     createTime?: string;
+    diffity?: string;
     editTime?: string;
     id?: number;
     isDelete?: number;
+    isVip?: number;
     tags?: string;
     title?: string;
     updateTime?: string;
@@ -422,6 +424,8 @@ declare namespace API {
   type QuestionAddRequest = {
     answer?: string;
     content?: string;
+    diffity?: string;
+    isVip?: number;
     tags?: string[];
     title?: string;
   };
@@ -536,7 +540,9 @@ declare namespace API {
   type QuestionEditRequest = {
     answer?: string;
     content?: string;
+    diffity?: string;
     id?: number;
+    isVip?: number;
     tags?: string[];
     title?: string;
   };
@@ -545,7 +551,9 @@ declare namespace API {
     answer?: string;
     content?: string;
     current?: number;
+    diffity?: string;
     id?: number;
+    isVip?: number;
     notId?: number;
     pageSize?: number;
     questionBankId?: number;
@@ -560,7 +568,9 @@ declare namespace API {
   type QuestionUpdateRequest = {
     answer?: string;
     content?: string;
+    diffity?: string;
     id?: number;
+    isVip?: number;
     tags?: string[];
     title?: string;
   };
@@ -569,7 +579,9 @@ declare namespace API {
     answer?: string;
     content?: string;
     createTime?: string;
+    diffity?: string;
     id?: number;
+    isVip?: number;
     tagList?: string[];
     title?: string;
     updateTime?: string;

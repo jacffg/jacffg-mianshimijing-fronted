@@ -5,15 +5,16 @@ import {
   deleteQuestionUsingPost,
   listQuestionByPageUsingPost,
 } from "@/api/questionController";
-import { PlusOutlined } from "@ant-design/icons";
+import { AntDesignOutlined, PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Space, Typography } from "antd";
+import { Button, message, Modal, Space, Typography } from "antd";
 import React, { useRef, useState } from "react";
 import TagList from "@/components/TagList";
 import MdEditor from "@/components/MdEditor";
 import UpdateBankModal from "@/app/admin/question/components/UpdateBankModal";
-import './index.css';
+import "./index.css";
+import VIPTag from "@/components/VIPTag";
 
 /**
  * 题目管理页面
@@ -38,23 +39,29 @@ const QuestionAdminPage: React.FC = () => {
    * @param row
    */
   const handleDelete = async (row: API.Question) => {
-    const hide = message.loading("正在删除");
     if (!row) return true;
-    try {
-      await deleteQuestionUsingPost({
-        id: row.id as any,
-      });
-      hide();
-      message.success("删除成功");
-      actionRef?.current?.reload();
-      return true;
-    } catch (error: any) {
-      hide();
-      message.error("删除失败，" + error.message);
-      return false;
-    }
+    // 显示确认对话框
+    Modal.confirm({
+      title: "确认删除",
+      content: "确定要删除该用户吗？",
+      onOk: async () => {
+        try {
+          await deleteQuestionUsingPost({
+            id: row.id as any,
+          });
+          message.success("删除成功");
+          actionRef?.current?.reload();
+          return true;
+        } catch (error: any) {
+          message.error("删除失败，" + error.message);
+          return false;
+        }
+      },
+      onCancel() {
+        message.info("已取消删除");
+      },
+    });
   };
-
   /**
    * 表格列配置
    */
@@ -109,8 +116,63 @@ const QuestionAdminPage: React.FC = () => {
       },
       render: (_, record) => {
         const tagList = JSON.parse(record.tags || "[]");
-        return <TagList tagList={tagList} />;
+        return <div>
+          <Space>
+            <>
+              {record?.isVip == 0 && <VIPTag />}
+              <TagList tagList={tagList} />
+            </>
+          </Space>
+        </div>
       },
+    },
+    {
+      title: "难度",
+      dataIndex: "diffity",
+      valueEnum: {
+        easy: {
+          text: "简单",
+        },
+        middle: {
+          text: "中等",
+        },
+        hard: {
+          text: "困难",
+        },
+      },
+      render: (text, record) => (
+          <span
+              style={{
+                color:
+                    record.diffity === "easy"
+                        ? "green"
+                        : record.diffity === "middle"
+                            ? "#ee9e0b"
+                            : "red",
+                fontSize: '16px',
+                fontWeight: 'bold'  // 添加这行使文本加粗
+              }}
+          >
+          {record.diffity === "easy"
+              ? "简单"
+              : record.diffity === "middle"
+                  ? "中等"
+                  : "困难"}
+        </span>
+      ),
+    },
+    {
+      title: "是否为会员专属",
+      dataIndex: "isVip",
+      valueEnum: {
+        0: {
+          text: "是",
+        },
+        1: {
+          text: "否",
+        },
+      },
+      hideInTable: true,
     },
     {
       title: "创建用户",
@@ -148,26 +210,28 @@ const QuestionAdminPage: React.FC = () => {
       dataIndex: "option",
       valueType: "option",
       render: (_, record) => (
-        <Space size="middle">
-          <Typography.Link
+        <Space size="small" >
+          <Button
+            style={{ color: "rgba(26,78,171,0.94)" }}
             onClick={() => {
               setCurrentRow(record);
               setUpdateModalVisible(true);
             }}
           >
             修改
-          </Typography.Link>
-          <Typography.Link
+          </Button>
+          <Button
+            style={{ color: "rgba(86,164,166,0.94)" }}
             onClick={() => {
               setCurrentRow(record);
               setUpdateBankModalVisible(true);
             }}
           >
             修改所属题库
-          </Typography.Link>
-          <Typography.Link type="danger" onClick={() => handleDelete(record)}>
+          </Button>
+          <Button type="dashed" danger onClick={() => handleDelete(record)}>
             删除
-          </Typography.Link>
+          </Button>
         </Space>
       ),
     },
@@ -176,7 +240,7 @@ const QuestionAdminPage: React.FC = () => {
   return (
     <PageContainer>
       <ProTable<API.Question>
-        headerTitle={"查询表格"}
+        headerTitle={"题目管理表格"}
         actionRef={actionRef}
         rowKey="key"
         scroll={{
@@ -214,6 +278,9 @@ const QuestionAdminPage: React.FC = () => {
           };
         }}
         columns={columns}
+        pagination={{
+          pageSize: 6, // 每页显示5条记录
+        }}
       />
       <CreateModal
         visible={createModalVisible}

@@ -5,3 +5,16 @@
 .ant-pro-layout-top {
   height: 100%;
 }
+.ant-pro-sider-menu .ant-menu-item-selected {
+  text-decoration: underline;
+  text-decoration-color: #ad9211; /* 下划线颜色 */
+  text-decoration-style: wavy; /* 下划线样式 */
+}
+/* 在您的全局或局部 CSS 文件中添加 */
+.ant-pro-sider-menu .ant-menu-item-selected {
+  text-decoration: underline;
+}
+/* 增加选择器的具体性 */
+#basicLayout .ant-pro-sider-menu .ant-menu-item-selected {
+  text-decoration: underline !important;
+}

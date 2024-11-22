@@ -28,7 +28,7 @@ const SearchInput = (props: Props) => {
         }}
         placeholder="搜索题目"
         onSearch={(value) => {
-          router.push(`/questions?q=${value}`);
+          router.push(`/questions?searchTitle=${value}`);
         }}
       />
     </div>

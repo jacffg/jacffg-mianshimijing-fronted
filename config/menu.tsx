@@ -1,6 +1,7 @@
 import { MenuDataItem } from "@ant-design/pro-layout";
-import { CrownOutlined } from "@ant-design/icons";
+import {CrownOutlined, SendOutlined} from "@ant-design/icons";
 import ACCESS_ENUM from "@/access/accessEnum";
+import { red } from "@ant-design/colors";
 
 // 菜单列表
 export const menus = [
