@@ -80,43 +80,47 @@ const UpdateBankModal: React.FC<Props> = (props) => {
       <Form form={form} style={{ marginTop: 24 }}>
         <Form.Item label="所属题库" name="questionBankIdList">
           <Select
-            mode="multiple"
-            style={{ width: "100%" }}
-            options={questionBankList.map((questionBank) => {
-              return {
+              mode="multiple"
+              style={{ width: "100%" }}
+              showSearch
+              filterOption={(input, option) => {
+                if (!option || !option.label) return false; // 确保 option 和 label 存在
+                return option.label.toLowerCase().includes(input.toLowerCase());
+              }}
+              options={questionBankList.map((questionBank) => ({
                 label: questionBank.title,
                 value: questionBank.id,
-              };
-            })}
-            onSelect={async (value) => {
-              const hide = message.loading("正在更新");
-              try {
-                await addQuestionBankQuestionUsingPost({
-                  questionId,
-                  questionBankId: value,
-                });
-                hide();
-                message.success("绑定题库成功");
-              } catch (error: any) {
-                hide();
-                message.error("绑定题库失败，" + error.message);
-              }
-            }}
-            onDeselect={async (value) => {
-              const hide = message.loading("正在更新");
-              try {
-                await removeQuestionBankQuestionUsingPost({
-                  questionId,
-                  questionBankId: value,
-                });
-                hide();
-                message.success("取消绑定题库成功");
-              } catch (error: any) {
-                hide();
-                message.error("取消绑定题库失败，" + error.message);
-              }
-            }}
+              }))}
+              onSelect={async (value) => {
+                const hide = message.loading("正在更新");
+                try {
+                  await addQuestionBankQuestionUsingPost({
+                    questionId,
+                    questionBankId: value,
+                  });
+                  hide();
+                  message.success("绑定题库成功");
+                } catch (error: any) {
+                  hide();
+                  message.error("绑定题库失败，" + error.message);
+                }
+              }}
+              onDeselect={async (value) => {
+                const hide = message.loading("正在更新");
+                try {
+                  await removeQuestionBankQuestionUsingPost({
+                    questionId,
+                    questionBankId: value,
+                  });
+                  hide();
+                  message.success("取消绑定题库成功");
+                } catch (error: any) {
+                  hide();
+                  message.error("取消绑定题库失败，" + error.message);
+                }
+              }}
           />
+
         </Form.Item>
       </Form>
     </Modal>

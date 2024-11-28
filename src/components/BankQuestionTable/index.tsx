@@ -119,16 +119,13 @@ const BankQuestionTable: React.FC<Props> = (props: Props) => {
         dataSource={questionList}
         pagination={
           {
-            pageSize: 12,
-            showTotal: (total) => `总共 ${total} 条`,
+            pageSize: 8,
+            // showTotal: (total) => `总共 ${total} 条`,
             showSizeChanger: false,
             total,
           } as TablePaginationConfig
         }
         columns={columns}
-        pagination={{
-          pageSize: 6, // 每页显示5条记录
-        }}
         search={false} // 取消搜索行
         toolBarRender={false} // 取消操作区
       />

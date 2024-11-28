@@ -11,6 +11,18 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListHotTagsVO_ = {
+    code?: number;
+    data?: HotTagsVO[];
+    message?: string;
+  };
+
+  type BaseResponseListQuestionVO_ = {
+    code?: number;
+    data?: QuestionVO[];
+    message?: string;
+  };
+
   type BaseResponseLoginUserVO_ = {
     code?: number;
     data?: LoginUserVO;
@@ -178,6 +190,11 @@ declare namespace API {
   type getUserVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type HotTagsVO = {
+    hotNum?: number;
+    tag?: string;
   };
 
   type LoginUserVO = {
@@ -419,6 +436,7 @@ declare namespace API {
     title?: string;
     updateTime?: string;
     userId?: number;
+    viewNum?: number;
   };
 
   type QuestionAddRequest = {
@@ -563,6 +581,7 @@ declare namespace API {
     tags?: string[];
     title?: string;
     userId?: number;
+    viewNum?: number;
   };
 
   type QuestionUpdateRequest = {
@@ -587,6 +606,7 @@ declare namespace API {
     updateTime?: string;
     user?: UserVO;
     userId?: number;
+    viewNum?: number;
   };
 
   type uploadFileUsingPOSTParams = {

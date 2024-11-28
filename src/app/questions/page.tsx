@@ -1,9 +1,6 @@
 "use client";
 import Title from "antd/es/typography/Title";
-import { message } from "antd";
-import { useState, useEffect } from "react";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
-import QuestionTable from "@/components/QuestionTable";
+import {useState} from "react";
 import "./index.css";
 import QuestionList from "@/components/QuestionList";
 
@@ -19,24 +16,25 @@ export default function QuestionsPage({ searchParams }) {
   const [total, setTotal] = useState(0);
 
   // 使用 useEffect 钩子进行异步请求
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await listQuestionVoByPageUsingPost({
-          title: searchTitle,
-          pageSize: 150,
-          sortField: "createTime",
-          sortOrder: "descend",
-        });
-        setQuestionList(res.data.records ?? []);
-        setTotal(res.data.total ?? 0);
-      } catch (e) {
-        message.error("获取题目列表失败，" + e.message);
-      }
-    };
-
-    fetchData();
-  }, [searchTitle]); // 当 searchText 变化时重新请求数据
+  // useEffect(() => {
+  //   alert("fklsd")
+  //   const fetchData = async () => {
+  //     try {
+  //       const res = await listQuestionVoByPageUsingPost({
+  //         title: searchTitle,
+  //         pageSize: 150,
+  //         sortField: "createTime",
+  //         sortOrder: "descend",
+  //       });
+  //       setQuestionList(res.data.records ?? []);
+  //       setTotal(res.data.total ?? 0);
+  //     } catch (e) {
+  //       message.error("获取题目列表失败，" + e.message);
+  //     }
+  //   };
+  //
+  //   fetchData();
+  // }, [searchTitle]); // 当 searchText 变化时重新请求数据
 
   return (
     <div id="questionsPage" className="max-width-content">

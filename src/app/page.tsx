@@ -43,10 +43,13 @@ export default async function HomePage() {
 
   return (
     <div id="homePage" className="max-width-content">
-      <Flex justify="space-between" align="center">
-        <Title level={3}>最新题库</Title>
-        <Link href={"/banks"}>查看更多</Link>
-      </Flex>
+        <Flex align="center" style={{ gap: "1120px" }}>
+            {/* 使用 gap 设置子元素间距 */}
+            <Title level={3} style={{ margin: 0 }}>最新题库</Title>
+            <Link href={"/banks"} style={{ margin: 0 }}>查看更多</Link>
+        </Flex>
+        <div style={{marginBottom:10} }/>
+
       <QuestionBankList questionBankList={questionBankList} />
       <Divider />
       <Flex justify="space-between" align="center">

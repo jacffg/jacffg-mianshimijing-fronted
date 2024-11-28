@@ -15,6 +15,7 @@ import MdEditor from "@/components/MdEditor";
 import UpdateBankModal from "@/app/admin/question/components/UpdateBankModal";
 import "./index.css";
 import VIPTag from "@/components/VIPTag";
+import {listQuestionBankVoByPageUsingPost} from "@/api/questionBankController";
 
 /**
  * 题目管理页面
@@ -75,8 +76,43 @@ const QuestionAdminPage: React.FC = () => {
     {
       title: "所属题库",
       dataIndex: "questionBankId",
-      hideInTable: true,
-      hideInForm: true,
+      valueType: "select", // 设置为下拉框
+      hideInTable: false, // 显示在表格中
+      hideInSearch: false, // 显示在搜索中
+      fieldProps: {
+        placeholder: "请选择题库",
+        showSearch: true, // 支持搜索
+        filterOption: (input, option) => {
+          if (!option?.label) return false;
+          return option.label.toLowerCase().includes(input.toLowerCase());
+        },
+        onChange: (value, option) => {
+          console.log("当前选中题库:", option); // 可选：调试用
+        },
+      },
+      request: async () => {
+        try {
+          // 调用后端接口获取题库列表
+          const res = await listQuestionBankVoByPageUsingPost({
+            pageSize: 100, // 控制数据量，根据需求调整
+          });
+          if (res.code !== 0) {
+            message.error("获取题库列表失败");
+            return [];
+          }
+
+          const result = res.data?.records || [];
+
+          // 将返回的数据格式化为下拉框选项
+          return result.map((item: { id: number; title: string }) => ({
+            label: item.title,
+            value: item.id,
+          }));
+        } catch (error) {
+          message.error("请求题库列表时出错");
+          return [];
+        }
+      },
     },
     {
       title: "标题",
@@ -113,6 +149,15 @@ const QuestionAdminPage: React.FC = () => {
       valueType: "select",
       fieldProps: {
         mode: "tags",
+      },
+      request: async () => {
+        // 假设从后端获取所有可用标签
+        const tags = [
+          { label: "JavaScript", value: "JavaScript" },
+          { label: "布局", value: "布局" },
+          { label: "CSS", value: "CSS" },
+        ];
+        return tags;
       },
       render: (_, record) => {
         const tagList = JSON.parse(record.tags || "[]");

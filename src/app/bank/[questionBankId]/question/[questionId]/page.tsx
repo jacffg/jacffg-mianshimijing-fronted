@@ -1,20 +1,15 @@
 "use client";
-import { useState, useEffect, useCallback } from "react";
-import {Flex, Menu, message, Input, QRCode} from "antd";
+import React, { useEffect, useState } from "react";
+import {Card, Flex, Input, Menu, message, Space} from "antd";
 import { getQuestionBankVoByIdUsingGet } from "@/api/questionBankController";
-import {
-  getQuestionVoByIdUsingGet,
-  listQuestionVoByPageUsingPost,
-} from "@/api/questionController";
+import { getQuestionVoByIdUsingGet } from "@/api/questionController";
 import Title from "antd/es/typography/Title";
 import Sider from "antd/es/layout/Sider";
 import { Content } from "antd/es/layout/layout";
 import QuestionCard from "@/components/QuestionCard";
 import Link from "next/link";
 import "./index.css";
-import {CloseCircleOutlined, SearchOutlined} from "@ant-design/icons";
-import {RootState} from "@/stores";
-import { useDispatch, useSelector } from "react-redux";
+import {CloseCircleOutlined, DoubleLeftOutlined, DoubleRightOutlined, SearchOutlined} from "@ant-design/icons";
 
 export default function BankQuestionPage({ params }) {
   const { questionBankId, questionId } = params;
@@ -23,6 +18,7 @@ export default function BankQuestionPage({ params }) {
   const [question, setQuestion] = useState(null);
   const [debouncedSearchText, setDebouncedSearchText] = useState("");
   const [init, setInit] = useState<boolean>(true);
+
 
 
   const handleSearch = async () => {
@@ -54,7 +50,6 @@ export default function BankQuestionPage({ params }) {
     }
   }, [debouncedSearchText]);
 
-
   useEffect(() => {
     const fetchBankAndQuestion = async () => {
       try {
@@ -77,21 +72,32 @@ export default function BankQuestionPage({ params }) {
     fetchBankAndQuestion();
   }, [questionBankId, questionId]);
 
-
   if (!bank || !question) {
     return <div>加载中...</div>;
   }
 
-
   const questionMenuItemList = (bank?.questionPage?.records || [])
-      .filter((q) => q.title.toLowerCase().includes(searchText.toLowerCase()))
-      .map((q) => ({
-        label: (
-            <Link href={`/bank/${questionBankId}/question/${q.id}`}>{q.title}</Link>
-        ),
-        key: q.id,
-      }));
+    .filter((q) => q.title.toLowerCase().includes(searchText.toLowerCase()))
+    .map((q) => ({
+      label: (
+        <Link href={`/bank/${questionBankId}/question/${q.id}`}>{q.title}</Link>
+      ),
+      key: q.id,
+    }));
+  // 获取当前题目索引
+  const currentQuestionIndex = (bank?.questionPage?.records || []).findIndex(
+      (q) => q.id === questionId
+  );
 
+// 根据索引获取上一题和下一题的信息
+  const prevQuestion =
+      currentQuestionIndex > 0
+          ? bank.questionPage.records[currentQuestionIndex - 1]
+          : null;
+  const nextQuestion =
+      currentQuestionIndex < bank.questionPage.records.length - 1
+          ? bank.questionPage.records[currentQuestionIndex + 1]
+          : null;
 
   return (
     <div id="bankQuestionPage">
@@ -101,35 +107,63 @@ export default function BankQuestionPage({ params }) {
             {bank.title}
           </Title>
           <Input
-              placeholder="搜索题目"
-              value={searchText}
-              onChange={(e) => setSearchText(e.target.value)} // 只更新状态
-              style={{
-                margin: "3px 10px",
-                marginBottom: "-6px",
-                width: "220px",
-                height: "50px",
-              }}
-              addonBefore={<SearchOutlined style={{ color: "rgba(0,0,0,0.45)" }} />}
-              suffix={
-                    (
-                      <CloseCircleOutlined
-                          style={{ color: "rgba(0,0,0,0.45)", cursor: "pointer" }}
-                          onClick={() => setSearchText("")} // 点击清空输入框内容
-                      />
-                  )
-              }
+            placeholder="搜索题目"
+            value={searchText}
+            onChange={(e) => setSearchText(e.target.value)} // 只更新状态
+            style={{
+              margin: "3px 10px",
+              marginBottom: "-6px",
+              width: "220px",
+              height: "50px",
+            }}
+            addonBefore={
+              <SearchOutlined style={{ color: "rgba(0,0,0,0.45)" }} />
+            }
+            suffix={
+              <CloseCircleOutlined
+                style={{ color: "rgba(0,0,0,0.45)", cursor: "pointer" }}
+                onClick={() => setSearchText("")} // 点击清空输入框内容
+              />
+            }
           />
 
           <Menu
-              items={questionMenuItemList}
-              selectedKeys={[question?.id]}
-              style={{ maxHeight: "400px", overflowY: "auto" }}
+            items={questionMenuItemList}
+            selectedKeys={[question?.id]}
+            style={{ maxHeight: "400px", overflowY: "auto" }}
           />
-
         </Sider>
         <Content>
-          <QuestionCard question={question} />
+          <QuestionCard question={question} questionBankId={questionBankId}/>
+          <div  style={{width:"1100px"}}>
+            <Card>
+              <Space size={962}>
+                <span>上一题</span>
+                <span>下一题</span>
+              </Space>
+              <div style={{marginBottom:16}}/>
+
+              <Flex justify="space-between" align="center">
+                {prevQuestion ? (
+                    <a href={`/bank/${questionBankId}/question/${prevQuestion.id}`}>
+                      <DoubleLeftOutlined  disabled={false}/> {prevQuestion.title}
+                    </a>
+                ) : (
+                    <a><DoubleLeftOutlined /></a>
+                )}
+                {nextQuestion ? (
+                    <a href={`/bank/${questionBankId}/question/${nextQuestion.id}`}>
+                      {nextQuestion.title}  <DoubleRightOutlined />
+                    </a>
+                ) : (
+                    <a ><DoubleRightOutlined disabled={false} /></a>
+                )}
+              </Flex>
+
+            </Card>
+          </div>
+
+
         </Content>
       </Flex>
     </div>

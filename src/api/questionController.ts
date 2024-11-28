@@ -62,6 +62,22 @@ export async function getQuestionVoByIdUsingGet(
   });
 }
 
+/** getHotQuestions GET /api/question/hot/question */
+export async function getHotQuestionsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListQuestionVO_>('/api/question/hot/question', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** getHotTags GET /api/question/hot/tags */
+export async function getHotTagsUsingGet(options?: { [key: string]: any }) {
+  return request<API.BaseResponseListHotTagsVO_>('/api/question/hot/tags', {
+    method: 'GET',
+    ...(options || {}),
+  });
+}
+
 /** listQuestionByPage POST /api/question/list/page */
 export async function listQuestionByPageUsingPost(
   body: API.QuestionQueryRequest,
