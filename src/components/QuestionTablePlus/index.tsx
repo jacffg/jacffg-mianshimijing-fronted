@@ -50,7 +50,7 @@ const QuestionTablePlus: React.FC<Props> = (props: Props) => {
           <Link
             href={`/question/${record.id}`}
             style={{ fontSize: "16px", fontWeight: "bold" }}
-          >
+          >{record.questionNum}.
             {record.title}
           </Link>
         );

@@ -72,7 +72,7 @@ const QuestionList = (props: Props) => {
         >
           <HotQuestions />
         </Sider>
-          <div style={{marginBottom:16}}/>
+          <div style={{marginBottom:32}}/>
         <Sider
           width={320}
           theme="light"

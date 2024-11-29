@@ -30,16 +30,13 @@ export default async function HomePage() {
     message.error("获取题库列表失败，" + e.message);
   }
 
-  try {
-    const res = await listQuestionVoByPageUsingPost({
-      pageSize: 12,
-      sortField: "createTime",
-      sortOrder: "descend",
-    });
-    questionList = res.data.records ?? [];
-  } catch (e) {
-    message.error("获取题目列表失败，" + e.message);
-  }
+  // try {
+  //   const res = await listQuestionVoByPageUsingPost({
+  //   });
+  //   questionList = res.data.records ?? [];
+  // } catch (e) {
+  //   message.error("获取题目列表失败，" + e.message);
+  // }
 
   return (
     <div id="homePage" className="max-width-content">

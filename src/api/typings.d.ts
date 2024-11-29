@@ -1,4 +1,9 @@
 declare namespace API {
+  type aiGenerateQuestionUsingPOSTParams = {
+    /** questionId */
+    questionId?: number;
+  };
+
   type BaseResponseBoolean_ = {
     code?: number;
     data?: boolean;
@@ -432,6 +437,7 @@ declare namespace API {
     id?: number;
     isDelete?: number;
     isVip?: number;
+    questionNum?: number;
     tags?: string;
     title?: string;
     updateTime?: string;
@@ -584,6 +590,11 @@ declare namespace API {
     viewNum?: number;
   };
 
+  type QuestionRelatedRequest = {
+    id?: number;
+    num?: number;
+  };
+
   type QuestionUpdateRequest = {
     answer?: string;
     content?: string;
@@ -601,6 +612,7 @@ declare namespace API {
     diffity?: string;
     id?: number;
     isVip?: number;
+    questionNum?: number;
     tagList?: string[];
     title?: string;
     updateTime?: string;

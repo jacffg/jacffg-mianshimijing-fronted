@@ -92,7 +92,6 @@ const QuestionCard = (props: Props) => {
   };
   //分享
   const doShare = () => {
-    alert("ok");
     setModalVisible(true);
   };
 
@@ -100,6 +99,7 @@ const QuestionCard = (props: Props) => {
     <div className="question-card" style={{ width: "1100px" }}>
       <Card>
         <Title level={1} style={{ fontSize: 24 }}>
+          {question.questionNum}、
           {question.title}
         </Title>
         <div style={{ marginTop: "-10px" }}>

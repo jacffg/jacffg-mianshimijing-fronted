@@ -88,16 +88,16 @@ const QuestionRequestForm: React.FC<Props> = ({
 
   const handleSearch = async () => {
     const request: API.QuestionQueryRequest = {
-      sortField: "createTime",
-      sortOrder: "descend",
       questionBankId: questionBankId ? Number(questionBankId) : undefined,
       title: title || undefined,
       isVip: membership === "true" ? 0 : membership === "false" ? 1 : undefined,
       tags: tags.length > 0 ? tags : undefined,
       diffity: difficulty || undefined,
+      pageSize:199
     };
     try {
       const res = await listQuestionVoByPageUsingPost(request);
+      console.log(res.data.records);
       setQuestionList(res.data?.records ?? []);
       onSearch(res.data?.records ?? []);
     } catch (e) {

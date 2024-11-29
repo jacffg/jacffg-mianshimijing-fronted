@@ -17,6 +17,21 @@ export async function addQuestionUsingPost(
   });
 }
 
+/** aiGenerateQuestion POST /api/question/ai_generate */
+export async function aiGenerateQuestionUsingPost(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.aiGenerateQuestionUsingPOSTParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseQuestionVO_>('/api/question/ai_generate', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
+    ...(options || {}),
+  });
+}
+
 /** deleteQuestion POST /api/question/delete */
 export async function deleteQuestionUsingPost(
   body: API.DeleteRequest,
@@ -58,6 +73,21 @@ export async function getQuestionVoByIdUsingGet(
     params: {
       ...params,
     },
+    ...(options || {}),
+  });
+}
+
+/** getRelatedQuestions POST /api/question/getRelatedQuestions */
+export async function getRelatedQuestionsUsingPost(
+  body: API.QuestionRelatedRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseListQuestionVO_>('/api/question/getRelatedQuestions', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
     ...(options || {}),
   });
 }

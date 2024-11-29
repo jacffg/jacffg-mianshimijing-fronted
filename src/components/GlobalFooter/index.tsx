@@ -13,7 +13,7 @@ export default function GlobalFooter() {
       <div>© {currentYear} 面试刷题平台</div>
       <div>
         <a href="https://www.code-nav.cn" target="_blank">
-          作者：编程导航 - 程序员鱼皮
+          作者：码羊
         </a>
       </div>
     </div>
