@@ -6,7 +6,13 @@ import { Tag } from "antd";
  * @param props
  * @constructor
  */
-const VIPTag = () => {
+interface Props {
+    size?: number; // 字体大小
+    padding?:number//边距
+}
+const VIPTag = (props:Props) => {
+    const {size=16,padding = 4} = props;
+
   const tagStyle = {
     display: "flex",
     flexWrap: "wrap",
@@ -18,8 +24,8 @@ const VIPTag = () => {
     backgroundColor: "#ffb902", // 背景颜色
     color: "#ffffff", // 文字颜色
     border: "none", // 移除默认边框
-    padding: "4px 8px", // 内边距
-    fontSize: "16px", // 字体大小
+      padding: `${padding}px ${padding * 2}px`, // 动态内边距
+    fontSize: size, // 字体大小
     transition: "background-color 0.3s, color 0.3s", // 平滑过渡效果
   };
 

@@ -1,5 +1,15 @@
 "use client";
-import {Button, Card, Divider, Input, message, Modal, QRCode, Space} from "antd";
+import {
+  Button,
+  Card,
+  Divider,
+  Input,
+  message,
+  Modal,
+  QRCode,
+  Space,
+  Spin,
+} from "antd";
 import Title from "antd/es/typography/Title";
 import TagList from "@/components/TagList";
 import MdViewer from "@/components/MdViewer";
@@ -19,9 +29,15 @@ import {
   ShareAltOutlined,
   StarFilled,
   StarOutlined,
+  SmileOutlined,
+  LoadingOutlined,
+  RobotOutlined, LockOutlined,
 } from "@ant-design/icons";
 import { useRouter } from "next/navigation";
 import Loginforbidden from "@/components/LoginForbidden/Loginforbidden";
+import { getQuestionBankVoByIdUsingGet } from "@/api/questionBankController";
+import { aiGenerateQuestionUsingPost } from "@/api/questionController";
+import Comments from "@/components/Comments/Comments";
 
 interface Props {
   question: API.QuestionVO;
@@ -39,16 +55,21 @@ const QuestionCard = (props: Props) => {
   const [isAnswerVisible, setIsAnswerVisible] = useState(false); // 控制答案是否显示
   const loginUser = useSelector((state: RootState) => state.loginUser);
 
+  const [isLoding, setIsLoding] = useState(false); // 生成中
   const [isLIke, setIsLike] = useState(true); // 是否点赞
   const [isCollect, setIsCollect] = useState(true); // 是否收藏
   const [isModalVisible, setModalVisible] = useState(false);
+  const [aiContent, setAiContent] = useState<string>("");
 
+  const isNotVip = (loginUser.userRole == ACCESS_ENUM.USER ||
+      loginUser.userRole == ACCESS_ENUM.NOT_LOGIN) //是否为vip
   const isNotVisible =
-    question.isVip == 0 &&
-    (loginUser.userRole == ACCESS_ENUM.USER ||
-      loginUser.userRole == ACCESS_ENUM.NOT_LOGIN);
+    question.isVip == 0 &&isNotVip;
   const isLogin = loginUser.userRole != ACCESS_ENUM.NOT_LOGIN;
 
+
+  // 控制菜单栏 Tab
+  const [activeTabKey, setActiveTabKey] = useState<string>("questionAnswer");
   const handleCopy = async () => {
     try {
       await navigator.clipboard.writeText(window.location.href);
@@ -95,12 +116,25 @@ const QuestionCard = (props: Props) => {
     setModalVisible(true);
   };
 
+  const aiGenete = async () => {
+    setIsLoding(true);
+    try {
+      const res = await aiGenerateQuestionUsingPost({
+        questionId: question.id,
+      });
+      setAiContent(res.data.answer);
+      // setAiContent("fhasdk");
+      setIsAnswerVisible(true);
+    } catch (e) {
+      message.error("获取ai生成失败，" + e.message);
+    }
+    setIsLoding(false);
+  };
   return (
     <div className="question-card" style={{ width: "1100px" }}>
       <Card>
         <Title level={1} style={{ fontSize: 24 }}>
-          {question.questionNum}、
-          {question.title}
+          {question.questionNum}、{question.title}
         </Title>
         <div style={{ marginTop: "-10px" }}>
           <Space>
@@ -248,21 +282,112 @@ const QuestionCard = (props: Props) => {
       {!isNotVisible && isLogin && (
         <div>
           <Card
-            title="推荐答案"
-            extra={
-              <Button
-                icon={
-                  isAnswerVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />
-                }
-                onClick={toggleAnswerVisibility}
-                style={{ border: "none" }}
+            tabList={[
+              {
+                key: "questionAnswer",
+                label: "题目答案",
+              },
+              {
+                key: "AiAnswer",
+                label: "Ai生成",
+              },
+            ]}
+            activeTabKey={activeTabKey}
+            onTabChange={(key: string) => {
+              setActiveTabKey(key);
+            }}
+            tabBarExtraContent={
+              <div
+                style={{
+                  display: "flex",
+                  gap: "10px",
+                }}
               >
-                {isAnswerVisible ? "隐藏答案" : "查看答案"}
-              </Button>
+                {activeTabKey === "AiAnswer"   &&(
+                  <Button
+                    onClick={aiGenete}
+                    disabled={(isLoding || isNotVip)}
+                    type="primary"
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "0 16px",
+                    }}
+                  >
+                    {isLoding ? (
+                      <>
+                        <LoadingOutlined />
+                        <span>生成中...</span>
+                      </>
+                    ) : (
+                      <>
+                        <RobotOutlined />
+                        <span>生成 AI 答案</span>
+                      </>
+                    )}
+                  </Button>
+                )}
+                <Button
+                  icon={
+                    isAnswerVisible ? <EyeInvisibleOutlined /> : <EyeOutlined />
+                  }
+                  onClick={toggleAnswerVisibility}
+                  style={{ border: "none" }}
+                >
+                  {isAnswerVisible ? "隐藏答案" : "查看答案"}
+                </Button>
+              </div>
             }
           >
-            {isAnswerVisible && <MdViewer value={question.answer} />}
-            {!isAnswerVisible && (
+            {activeTabKey === "AiAnswer" && aiContent && isAnswerVisible && (
+              <MdViewer value={aiContent} />
+            )}
+            {activeTabKey === "questionAnswer" && isAnswerVisible && (
+                <MdViewer value={question.answer} />
+            )}
+            {activeTabKey === "AiAnswer" && isNotVip  && (
+                <div
+                    style={{
+                      display: "flex",
+                      flexDirection: "column",
+                      justifyContent: "center",
+                      alignItems: "center",
+                      textAlign: "center", // 居中对齐文本
+                    }}
+                >
+                  <div
+                      style={{ fontSize: "48px", color: "#faad14", marginBottom: "16px" }}
+                  >
+                    <LockOutlined />
+                  </div>
+                  <div
+                      style={{ fontSize: "20px", fontWeight: "bold", marginBottom: "8px" }}
+                  >
+                    会员专属功能
+                  </div>
+                  <div
+                      style={{ fontSize: "16px", color: "#888", marginBottom: "24px" }}
+                  >
+                    对不起，本功能为会员专属，请先开通 VIP 后使用。
+                  </div>
+                  <Button
+                      type="primary"
+                      href="/"
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                      }}
+                  >
+                    开通 VIP
+                  </Button>
+                </div>
+
+            )}
+
+            {!isAnswerVisible &&!(activeTabKey === "AiAnswer" && isNotVip) && (
               <div
                 style={{
                   display: "flex",
@@ -294,6 +419,8 @@ const QuestionCard = (props: Props) => {
               </div>
             )}
           </Card>
+          <div style={{marginBottom:16}}/>
+          <Comments questionId={question.id}/>
         </div>
       )}
 

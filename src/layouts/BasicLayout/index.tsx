@@ -1,13 +1,13 @@
 "use client";
 import {
-  GithubFilled,
-  LogoutOutlined,
-  MailOutlined,
-  SearchOutlined,
-  SendOutlined,
-  TeamOutlined,
-  UpOutlined,
-  WechatOutlined,
+    GithubFilled,
+    LogoutOutlined,
+    MailOutlined,
+    SearchOutlined,
+    SendOutlined,
+    TeamOutlined,
+    UpOutlined, UserOutlined,
+    WechatOutlined,
 } from "@ant-design/icons";
 import { ProLayout } from "@ant-design/pro-components";
 import { Card, Dropdown, message, Space, Modal, Col, Row } from "antd";
@@ -130,25 +130,26 @@ export default function BasicLayout({ children }: Props) {
             }
             return (
               <div>
-                <Dropdown
-                  menu={{
-                    items: [
-                      {
-                        key: "logout",
-                        icon: <LogoutOutlined />,
-                        label: "退出登录",
-                      },
-                    ],
-                    onClick: async (event: { key: React.Key }) => {
-                      const { key } = event;
-                      if (key === "logout") {
-                        userLogout();
-                      }
-                    },
-                  }}
-                >
-                  {dom}
-                </Dropdown>
+                  <Dropdown
+                      menu={{
+                          items: [
+                              { key: 'userCenter', icon: <UserOutlined />, label: '个人中心' },
+                              { key: 'logout', icon: <LogoutOutlined />, label: '退出登录' },
+                          ],
+                          onClick: async (event) => {
+                              const { key } = event;
+                              if (key === 'logout') {
+                                  userLogout();
+                              } else if (key === 'userCenter') {
+                                  router.push('/user/center');
+                              }
+                          },
+                      }}
+                  >
+                      {dom}
+                  </Dropdown>
+
+
               </div>
             );
           },

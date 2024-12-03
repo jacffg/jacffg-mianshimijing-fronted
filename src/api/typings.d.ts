@@ -10,9 +10,21 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseCommentVO_ = {
+    code?: number;
+    data?: CommentVO;
+    message?: string;
+  };
+
   type BaseResponseInt_ = {
     code?: number;
     data?: number;
+    message?: string;
+  };
+
+  type BaseResponseListCommentVO_ = {
+    code?: number;
+    data?: CommentVO[];
     message?: string;
   };
 
@@ -37,6 +49,18 @@ declare namespace API {
   type BaseResponseLong_ = {
     code?: number;
     data?: number;
+    message?: string;
+  };
+
+  type BaseResponsePageComment_ = {
+    code?: number;
+    data?: PageComment_;
+    message?: string;
+  };
+
+  type BaseResponsePageCommentVO_ = {
+    code?: number;
+    data?: PageCommentVO_;
     message?: string;
   };
 
@@ -153,7 +177,75 @@ declare namespace API {
     timestamp?: string;
   };
 
+  type Comment = {
+    ancestorId?: number;
+    content?: string;
+    createTime?: string;
+    id?: number;
+    isDelete?: number;
+    parentId?: number;
+    questionId?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type CommentAddRequest = {
+    content?: string;
+    parentId?: number;
+    questionId?: number;
+  };
+
+  type CommentEditRequest = {
+    content?: string;
+    id?: number;
+  };
+
+  type CommentQueryRequest = {
+    ancestorId?: number;
+    content?: string;
+    current?: number;
+    id?: number;
+    pageSize?: number;
+    parentId?: number;
+    questionId?: number;
+    sortField?: string;
+    sortOrder?: string;
+    userId?: number;
+  };
+
+  type CommentUpdateRequest = {
+    content?: string;
+    id?: number;
+    parentId?: number;
+    questionId?: number;
+    userId?: number;
+  };
+
+  type CommentVO = {
+    ancestorId?: number;
+    content?: string;
+    createTime?: string;
+    id?: number;
+    parentId?: number;
+    questionId?: number;
+    repliedUser?: UserVO;
+    replies?: CommentVO[];
+    updateTime?: string;
+    user?: UserVO;
+    userId?: number;
+  };
+
   type DeleteRequest = {
+    id?: number;
+  };
+
+  type getCommentByQuestionIdUsingGETParams = {
+    /** questionId */
+    questionId?: number;
+  };
+
+  type getCommentVOByIdUsingGETParams = {
+    /** id */
     id?: number;
   };
 
@@ -215,6 +307,32 @@ declare namespace API {
   type OrderItem = {
     asc?: boolean;
     column?: string;
+  };
+
+  type PageComment_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: Comment[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageCommentVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: CommentVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
   };
 
   type PagePost_ = {
