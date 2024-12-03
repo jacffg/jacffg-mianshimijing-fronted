@@ -1,3 +1,20 @@
 #questionPage {
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin: 0 auto;
+}
+
+.sider {
+    width: 320px;
+}
+
+@media (max-width: 768px) {
+    .sider {
+        width: 250px; /* 可根据需要调整 */
+    }
+
+    #questionPage {
+        flex-direction: column; /* 改为垂直排列 */
+    }
 }

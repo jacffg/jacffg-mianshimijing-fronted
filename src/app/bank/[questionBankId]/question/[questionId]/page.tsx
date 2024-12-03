@@ -102,7 +102,7 @@ export default function BankQuestionPage({ params }) {
   return (
     <div id="bankQuestionPage">
       <Flex gap={24}>
-        <Sider width={240} theme="light" style={{ padding: "24px 0" }}>
+        <Sider width={240} theme="light" style={{ padding: "24px 0", maxHeight:100 }}>
           <Title level={4} style={{ padding: "0 20px" }}>
             {bank.title}
           </Title>
@@ -130,7 +130,7 @@ export default function BankQuestionPage({ params }) {
           <Menu
             items={questionMenuItemList}
             selectedKeys={[question?.id]}
-            style={{ maxHeight: "400px", overflowY: "auto" }}
+            style={{ maxHeight: "700px", overflowY: "auto" }}
           />
         </Sider>
         <Content>

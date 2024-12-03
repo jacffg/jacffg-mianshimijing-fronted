@@ -12,8 +12,8 @@ import {
 
 import React, { useEffect, useState } from "react";
 import {
-  addCommentUsingPost,
-  getCommentByQuestionIdUsingGet,
+    addCommentUsingPost, deleteCommentUsingPost,
+    getCommentByQuestionIdUsingGet,
 } from "@/api/commentController";
 import Title from "antd/es/typography/Title";
 import dayjs from "dayjs";
@@ -23,7 +23,7 @@ import ACCESS_ENUM from "@/access/accessEnum";
 import CommentVO = API.CommentVO;
 import VIPTag from "@/components/VIPTag";
 import TextArea from "antd/es/input/TextArea";
-import {Simulate} from "react-dom/test-utils";
+import { Simulate } from "react-dom/test-utils";
 import cancel = Simulate.cancel;
 
 interface Props {
@@ -39,7 +39,7 @@ const Comments: React.FC<Props> = (props) => {
   const { questionId } = props;
   // 使用 useState 来存储 TextArea 的输入值
   const [commentText, setCommentText] = useState("");
-
+  const [showCount, setShowCount] = useState(3); // 默认显示 4 条
   const [replieCommentText, setReplieCommentText] = useState("");
   const [placeholder, setPlaceholder] = useState("");
   const [parentId, setParentId] = useState();
@@ -50,10 +50,18 @@ const Comments: React.FC<Props> = (props) => {
   const handleTextChange = (e) => {
     setCommentText(e.target.value); // 更新输入框的值
   };
-    // 处理输入框内容变化
-    const handleReplieTextChange = (e) => {
-        setReplieCommentText(e.target.value); // 更新输入框的值
-    };
+  // 处理输入框内容变化
+  const handleReplieTextChange = (e) => {
+    setReplieCommentText(e.target.value); // 更新输入框的值
+  };
+  // 点击展开按钮显示所有回复
+  const handleExpand = () => {
+    setShowCount(comments.length); // 显示所有回复
+  };
+  // 点击收起按钮，显示前 4 条
+  const handleCollapse = () => {
+    setShowCount(3); // 只显示 4 条
+  };
 
   //获取评论
   const getCommets = async () => {
@@ -102,7 +110,7 @@ const Comments: React.FC<Props> = (props) => {
     } else {
       setCommentAreaId(item.ancestorId);
     }
-    setParentId(item.id)
+    setParentId(item.id);
     setPlaceholder(`回复@${item.user?.userName}`);
   };
 
@@ -116,28 +124,46 @@ const Comments: React.FC<Props> = (props) => {
 
   //发送回复
   const doReplie = async (item: CommentVO) => {
-      if (!questionId) {
-          return;
+    if (!questionId) {
+      return;
+    }
+    if (!parentId) {
+      return;
+    }
+    try {
+      const res = await addCommentUsingPost({
+        questionId: questionId,
+        content: replieCommentText,
+        parentId: parentId,
+      });
+      if (res.code == 0) {
+        getCommets();
+        doCancel();
+        message.success("回复成功");
       }
-      if (!parentId){
-          return
-      }
-      try {
-          const res = await addCommentUsingPost({
-              questionId: questionId,
-              content: replieCommentText,
-              parentId:parentId
-          });
-          if (res.code == 0) {
-              getCommets();
-              doCancel();
-              message.success("回复成功");
-          }
-      } catch (e) {
-          message.error("回复失败，" + e.message);
-      }
+    } catch (e) {
+      message.error("回复失败，" + e.message);
+    }
   };
 
+  //删除评论
+  const doDelete = async (id: number) => {
+    if (!id) {
+      return;
+    }
+
+    try {
+      const res = await deleteCommentUsingPost({
+        id: id,
+      });
+      if (res.code == 0) {
+        getCommets();
+        message.success("删除评论成功");
+      }
+    } catch (e) {
+      message.error("删除评论失败，" + e.message);
+    }
+  };
   const RepliesView = (replie: API.CommentVO) => {
     return (
       <Card
@@ -265,6 +291,38 @@ const Comments: React.FC<Props> = (props) => {
                     回复
                   </div>
                 </Col>
+                {loginUser.id==replie.user?.id&&(
+                    <div>
+                        {/* 删除按钮 */}
+                        <Col>
+                            <div
+                                onClick={() => doDelete(replie.id)} // 这里将参数传递给 respond 函数
+                                style={{
+                                    width: 50,
+                                    height: 25,
+                                    marginTop: -35,
+                                    marginLeft: 820,
+                                    color: "red",
+                                    display: "flex",
+                                    fontWeight: "bold",
+                                    justifyContent: "center", // 居中对齐
+                                    alignItems: "center", // 垂直居中
+                                    cursor: "pointer", // 手指样式
+                                    borderRadius: "4px", // 给按钮加上圆角
+                                    transition: "background-color 0.3s", // 平滑过渡效果
+                                }}
+                                onMouseEnter={(e) => {
+                                    e.target.style.backgroundColor = "#b4aa97"; // 悬浮时的背景颜色
+                                }}
+                                onMouseLeave={(e) => {
+                                    e.target.style.backgroundColor = "white"; // 恢复原始背景颜色
+                                }}
+                            >
+                                删除
+                            </div>
+                        </Col>
+                    </div>
+                )}
               </Row>
             </div>
           }
@@ -376,23 +434,68 @@ const Comments: React.FC<Props> = (props) => {
                     回复
                   </div>
                 </Col>
+                    {loginUser.id==commet.user?.id&&(
+                        <div>
+                            {/* 删除按钮 */}
+                            <Col>
+                                <div
+                                    onClick={() => doDelete(commet.id)} // 这里将参数传递给 respond 函数
+                                    style={{
+                                        width: 50,
+                                        height: 25,
+                                        marginTop: -25,
+                                        marginLeft: 690,
+                                        color: "red",
+                                        display: "flex",
+                                        fontWeight: "bold",
+                                        justifyContent: "center", // 居中对齐
+                                        alignItems: "center", // 垂直居中
+                                        cursor: "pointer", // 手指样式
+                                        borderRadius: "4px", // 给按钮加上圆角
+                                        transition: "background-color 0.3s", // 平滑过渡效果
+                                    }}
+                                    onMouseEnter={(e) => {
+                                        e.target.style.backgroundColor = "#b4aa97"; // 悬浮时的背景颜色
+                                    }}
+                                    onMouseLeave={(e) => {
+                                        e.target.style.backgroundColor = "white"; // 恢复原始背景颜色
+                                    }}
+                                >
+                                    删除
+                                </div>
+                            </Col>
+                        </div>
+                    )}
               </Row>
               <div>
                 {commet.replies.length > 0 && (
-                  <List
-                    grid={{
-                      gutter: 10, // 设置行间距为 10px
-                      column: 1, // 每行显示 1 列
-                    }}
-                    dataSource={commet.replies}
-                    renderItem={(item) => (
-                      <List.Item>{RepliesView(item)}</List.Item>
+                  <div>
+                    <List
+                      grid={{
+                        gutter: 10, // 设置行间距为 10px
+                        column: 1, // 每行显示 1 列
+                      }}
+                      dataSource={commet.replies?.slice(0, showCount)} // 仅显示指定数量的回复
+                      renderItem={(item) => (
+                        <List.Item>{RepliesView(item)}</List.Item>
+                      )}
+                    />
+                    {commet.replies.length > 3 && showCount === 3 && (
+                      <Button type="link" onClick={handleExpand}>
+                        展开全部
+                      </Button>
                     )}
-                  />
+
+                    {commet.replies.length > 3 && showCount > 3 && (
+                      <Button type="link" onClick={handleCollapse}>
+                        收起
+                      </Button>
+                    )}
+                  </div>
                 )}
               </div>
               {commentAreaId == commet.id && (
-              // {commentAreaId == commentAreaId && (
+                // {commentAreaId == commentAreaId && (
                 <div
                   style={{
                     padding: "16px",

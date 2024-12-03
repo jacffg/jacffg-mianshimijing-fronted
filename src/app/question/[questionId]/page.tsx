@@ -41,6 +41,7 @@ export default async function QuestionPage({params}) {
                 </Content>
                 <Col>
                     <Sider
+                        className="sider"
                         width={320}
                         theme="light"
                         style={{
@@ -53,6 +54,7 @@ export default async function QuestionPage({params}) {
                     </Sider>
                     <div style={{marginBottom: 24}}/>
                     <Sider
+                        className="sider"
                         width={320}
                         theme="light"
                         style={{
