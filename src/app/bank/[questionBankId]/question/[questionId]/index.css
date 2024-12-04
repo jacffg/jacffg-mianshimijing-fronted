@@ -1,3 +1,14 @@
 #bankQuestionPage {
     width: 100%;
+    position: relative; /* 为悬浮卡片提供定位参考 */
 }
+.floating-card {
+    position: absolute; /* 或者 fixed，具体根据需求 */
+    z-index: 1000000;
+}
+.card{
+    z-index: 9999;
+}
+
+
+

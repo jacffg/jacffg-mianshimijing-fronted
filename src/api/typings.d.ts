@@ -106,6 +106,18 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageQuestionMark_ = {
+    code?: number;
+    data?: PageQuestionMark_;
+    message?: string;
+  };
+
+  type BaseResponsePageQuestionMarkVO_ = {
+    code?: number;
+    data?: PageQuestionMarkVO_;
+    message?: string;
+  };
+
   type BaseResponsePageQuestionVO_ = {
     code?: number;
     data?: PageQuestionVO_;
@@ -139,6 +151,12 @@ declare namespace API {
   type BaseResponseQuestionBankVO_ = {
     code?: number;
     data?: QuestionBankVO;
+    message?: string;
+  };
+
+  type BaseResponseQuestionMarkVO_ = {
+    code?: number;
+    data?: QuestionMarkVO;
     message?: string;
   };
 
@@ -249,6 +267,16 @@ declare namespace API {
     id?: number;
   };
 
+  type getisCollectUsingGETParams = {
+    /** questionId */
+    questionId?: number;
+  };
+
+  type getMarkUsingGETParams = {
+    /** questionId */
+    questionId?: number;
+  };
+
   type getPostVOByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -272,6 +300,11 @@ declare namespace API {
     sortOrder?: string;
     title?: string;
     userId?: number;
+  };
+
+  type getQuestionMarkVOByIdUsingGETParams = {
+    /** id */
+    id?: number;
   };
 
   type getQuestionVOByIdUsingGETParams = {
@@ -426,6 +459,32 @@ declare namespace API {
     total?: number;
   };
 
+  type PageQuestionMark_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: QuestionMark[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageQuestionMarkVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: QuestionMarkVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
   type PageQuestionVO_ = {
     countId?: string;
     current?: number;
@@ -552,6 +611,7 @@ declare namespace API {
     createTime?: string;
     diffity?: string;
     editTime?: string;
+    favourNum?: number;
     id?: number;
     isDelete?: number;
     isVip?: number;
@@ -689,11 +749,70 @@ declare namespace API {
     title?: string;
   };
 
+  type QuestionFavourAddRequest = {
+    questionId?: number;
+  };
+
+  type QuestionFavourQueryRequest = {
+    current?: number;
+    pageSize?: number;
+    questionQueryRequest?: QuestionQueryRequest;
+    sortField?: string;
+    sortOrder?: string;
+    userId?: number;
+  };
+
+  type QuestionMark = {
+    createTime?: string;
+    id?: number;
+    markType?: string;
+    questionId?: number;
+    updateTime?: string;
+    userId?: number;
+  };
+
+  type QuestionMarkAddRequest = {
+    markType?: string;
+    questionId?: number;
+  };
+
+  type QuestionMarkEditRequest = {
+    id?: number;
+    markType?: string;
+    questionId?: number;
+  };
+
+  type QuestionMarkQueryRequest = {
+    current?: number;
+    id?: number;
+    markType?: string;
+    pageSize?: number;
+    questionId?: number;
+    sortField?: string;
+    sortOrder?: string;
+    userId?: number;
+  };
+
+  type QuestionMarkUpdateRequest = {
+    id?: number;
+    markType?: string;
+    questionId?: number;
+    userId?: number;
+  };
+
+  type QuestionMarkVO = {
+    id?: number;
+    markType?: string;
+    questionId?: number;
+    userId?: number;
+  };
+
   type QuestionQueryRequest = {
     answer?: string;
     content?: string;
     current?: number;
     diffity?: string;
+    favourNum?: number;
     id?: number;
     isVip?: number;
     notId?: number;
@@ -728,6 +847,7 @@ declare namespace API {
     content?: string;
     createTime?: string;
     diffity?: string;
+    favourNum?: number;
     id?: number;
     isVip?: number;
     questionNum?: number;

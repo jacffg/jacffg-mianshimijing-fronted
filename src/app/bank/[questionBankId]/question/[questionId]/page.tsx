@@ -134,7 +134,7 @@ export default function BankQuestionPage({ params }) {
           />
         </Sider>
         <Content>
-          <QuestionCard question={question} questionBankId={questionBankId}/>
+          <QuestionCard defaultQuestion={question} questionBankId={questionBankId}/>
           <div  style={{width:"1100px"}}>
             <Card>
               <Space size={962}>

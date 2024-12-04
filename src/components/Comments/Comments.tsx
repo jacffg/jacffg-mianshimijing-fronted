@@ -56,7 +56,7 @@ const Comments: React.FC<Props> = (props) => {
   };
   // 点击展开按钮显示所有回复
   const handleExpand = () => {
-    setShowCount(comments.length); // 显示所有回复
+    setShowCount(comments?.length); // 显示所有回复
   };
   // 点击收起按钮，显示前 4 条
   const handleCollapse = () => {
@@ -72,9 +72,10 @@ const Comments: React.FC<Props> = (props) => {
       const res = await getCommentByQuestionIdUsingGet({
         questionId: questionId,
       });
-      setCommnets(res.data);
+        setCommnets(res?.data || []);
+
     } catch (e) {
-      message.error("获取题目评论，" + e.message);
+      message.error("获取题目评论失败" + e.message);
     }
   };
   //评论
@@ -468,7 +469,7 @@ const Comments: React.FC<Props> = (props) => {
                     )}
               </Row>
               <div>
-                {commet.replies.length > 0 && (
+                {commet?.replies?.length > 0 && (
                   <div>
                     <List
                       grid={{
@@ -480,13 +481,13 @@ const Comments: React.FC<Props> = (props) => {
                         <List.Item>{RepliesView(item)}</List.Item>
                       )}
                     />
-                    {commet.replies.length > 3 && showCount === 3 && (
+                    {commet?.replies?.length > 3 && showCount === 3 && (
                       <Button type="link" onClick={handleExpand}>
                         展开全部
                       </Button>
                     )}
 
-                    {commet.replies.length > 3 && showCount > 3 && (
+                    {commet?.replies?.length > 3 && showCount > 3 && (
                       <Button type="link" onClick={handleCollapse}>
                         收起
                       </Button>
@@ -634,14 +635,16 @@ const Comments: React.FC<Props> = (props) => {
               }
             />
           </Card>
-          <List
-            grid={{
-              gutter: 10, // 设置行间距为 10px
-              column: 1, // 每行显示 1 列
-            }}
-            dataSource={comments}
-            renderItem={(item) => <List.Item>{CommentView(item)}</List.Item>}
-          />
+            {comments && comments?.length > 0 && (
+                <List
+                    grid={{
+                        gutter: 10, // 设置行间距为 10px
+                        column: 1, // 每行显示 1 列
+                    }}
+                    dataSource={comments}
+                    renderItem={(item) => <List.Item>{CommentView(item)}</List.Item>}
+                />
+            )}
         </div>
       </Card>
     </div>

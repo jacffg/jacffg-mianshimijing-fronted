@@ -11,6 +11,8 @@ import * as postThumbController from './postThumbController';
 import * as questionController from './questionController';
 import * as questionBankController from './questionBankController';
 import * as questionBankQuestionController from './questionBankQuestionController';
+import * as questionMarkController from './questionMarkController';
+import * as questionFavourController from './questionFavourController';
 import * as userController from './userController';
 export default {
   wxMpController,
@@ -22,5 +24,7 @@ export default {
   questionController,
   questionBankController,
   questionBankQuestionController,
+  questionMarkController,
+  questionFavourController,
   userController,
 };

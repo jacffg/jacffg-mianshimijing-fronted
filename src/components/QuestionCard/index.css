@@ -1,3 +1,26 @@
 .question-card {
 
 }
+
+/* 为整个点击区域添加样式 */
+.hoverable-item2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center; /* 垂直居中内容 */
+    padding: 10px;
+    cursor: pointer; /* 光标变为点击样式 */
+    width: 90%; /* 确保宽度占满父元素 */
+    height: 98%; /* 确保高度占满父元素 */
+    transition: background-color 0.3s ease; /* 平滑的背景颜色过渡效果 */
+}
+
+/* 悬浮效果 */
+.hoverable-item2:hover {
+    background-color: rgb(250, 247, 247); /* 悬浮时背景颜色变化 */
+}
+
+/* 如果需要字体加粗或者其他样式也可以在这里添加 */
+.hoverable-item2:hover div {
+    font-weight: bold; /* 鼠标悬浮时使字体加粗 */
+    color: #ef6236;
+}

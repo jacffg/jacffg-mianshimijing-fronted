@@ -37,7 +37,7 @@ export default async function QuestionPage({params}) {
         <div id="questionPage">
             <Flex gap={23}>
                 <Content>
-                    <QuestionCard question={question}/>
+                    <QuestionCard defaultQuestion={question}/>
                 </Content>
                 <Col>
                     <Sider
