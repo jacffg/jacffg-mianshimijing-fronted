@@ -34,6 +34,18 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListQuestionFavourCountDTO_ = {
+    code?: number;
+    data?: QuestionFavourCountDTO[];
+    message?: string;
+  };
+
+  type BaseResponseListQuestionViewCountDTO_ = {
+    code?: number;
+    data?: QuestionViewCountDTO[];
+    message?: string;
+  };
+
   type BaseResponseListQuestionVO_ = {
     code?: number;
     data?: QuestionVO[];
@@ -302,9 +314,19 @@ declare namespace API {
     userId?: number;
   };
 
+  type getQuestionFavourStatictUsingGETParams = {
+    /** num */
+    num?: number;
+  };
+
   type getQuestionMarkVOByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getQuestionViewNumStatictUsingGETParams = {
+    /** num */
+    num?: number;
   };
 
   type getQuestionVOByIdUsingGETParams = {
@@ -330,6 +352,7 @@ declare namespace API {
   type LoginUserVO = {
     createTime?: string;
     id?: number;
+    likeShowAnswer?: number;
     updateTime?: string;
     userAvatar?: string;
     userName?: string;
@@ -753,6 +776,11 @@ declare namespace API {
     questionId?: number;
   };
 
+  type QuestionFavourCountDTO = {
+    favourNum?: string;
+    question?: string;
+  };
+
   type QuestionFavourQueryRequest = {
     current?: number;
     pageSize?: number;
@@ -842,6 +870,11 @@ declare namespace API {
     title?: string;
   };
 
+  type QuestionViewCountDTO = {
+    question?: string;
+    viewNum?: string;
+  };
+
   type QuestionVO = {
     answer?: string;
     content?: string;
@@ -868,6 +901,7 @@ declare namespace API {
     editTime?: string;
     id?: number;
     isDelete?: number;
+    likeShowAnswer?: number;
     mpOpenId?: string;
     unionId?: string;
     updateTime?: string;
@@ -880,6 +914,7 @@ declare namespace API {
   };
 
   type UserAddRequest = {
+    likeShowAnswer?: number;
     userAccount?: string;
     userAvatar?: string;
     userName?: string;
@@ -916,6 +951,7 @@ declare namespace API {
   };
 
   type UserUpdateMyRequest = {
+    likeShowAnswer?: number;
     userAvatar?: string;
     userName?: string;
     userProfile?: string;
@@ -932,6 +968,7 @@ declare namespace API {
   type UserVO = {
     createTime?: string;
     id?: number;
+    likeShowAnswer?: number;
     userAvatar?: string;
     userName?: string;
     userProfile?: string;

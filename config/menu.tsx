@@ -48,6 +48,11 @@ export const menus = [
         name: "评论管理",
         access: ACCESS_ENUM.ADMIN,
       },
+      {
+        path: "/admin/statistic",
+        name: "数据分析",
+        access: ACCESS_ENUM.ADMIN,
+      },
     ],
   },
 ] as MenuDataItem[];

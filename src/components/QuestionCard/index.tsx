@@ -233,6 +233,9 @@ const QuestionCard = (props: Props) => {
   useEffect(() => {
     getisCollect();
     getMark();
+    if (loginUser){
+      setIsAnswerVisible(loginUser.likeShowAnswer==1)
+    }
   }, []);
 
   const markStatus = MarkTypes
