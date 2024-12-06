@@ -18,6 +18,11 @@ export const menus = [
     name: "题目",
   },
   {
+    path: "/user/center",
+    name: "个人中心",
+    access: ACCESS_ENUM.USER,
+  },
+  {
     name: "面试鸭",
     path: "https://mianshiya.com",
     target: "_blank",
@@ -46,6 +51,11 @@ export const menus = [
       {
         path: "/admin/comment",
         name: "评论管理",
+        access: ACCESS_ENUM.ADMIN,
+      },
+      {
+        path: "/admin/redeem",
+        name: "兑换码管理",
         access: ACCESS_ENUM.ADMIN,
       },
       {

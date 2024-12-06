@@ -8,6 +8,10 @@ import checkAccess from "@/access/checkAccess";
  */
 const getAccessibleMenus = (loginUser: API.LoginUserVO, menuItems = menus) => {
   return menuItems.filter((item) => {
+    if (item.path?.includes("/user/center")){
+      return false;
+
+    }
     if (!checkAccess(loginUser, item.access)) {
       return false;
     }

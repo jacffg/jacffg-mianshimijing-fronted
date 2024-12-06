@@ -13,6 +13,7 @@ import * as questionBankController from './questionBankController';
 import * as questionBankQuestionController from './questionBankQuestionController';
 import * as questionMarkController from './questionMarkController';
 import * as questionFavourController from './questionFavourController';
+import * as redeemController from './redeemController';
 import * as statisticController from './statisticController';
 import * as userController from './userController';
 export default {
@@ -27,6 +28,7 @@ export default {
   questionBankQuestionController,
   questionMarkController,
   questionFavourController,
+  redeemController,
   statisticController,
   userController,
 };

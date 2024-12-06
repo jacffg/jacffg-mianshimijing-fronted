@@ -1,0 +1,42 @@
+/* 使容器占据父容器的 100% 宽度和高度 */
+.my-comments-container {
+    margin-left: -20px;
+    margin-top: -20px;
+    width: 100%;           /* 宽度占满 100% */
+    height: 100%;          /* 高度占满 100% */
+    min-height: 100vh;     /* 最小高度为视口高度 */
+    box-sizing: border-box; /* 包括 padding 在内的宽高计算 */
+}
+
+.my-comments-card {
+    width:900px;
+    max-width: 1000px;
+    margin:0 auto; /* 缩小整体卡片上下间距 */
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+}
+
+.my-comments-item {
+    margin-bottom:-10px; /* 缩小评论项的间距 */
+}
+
+.comment-card {
+    padding: 1px; /* 缩小卡片内部间距 */
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+}
+
+.comment-link {
+    font-size: 14px; /* 减小字体 */
+}
+
+.comment-update-time {
+    font-size: 12px;
+    color: #888;
+}
+
+.comment-content {
+    font-size: 13px; /* 调整字体大小 */
+    line-height: 1.4; /* 缩小行高 */
+    margin-top: 6px; /* 缩小与标题的间距 */
+}

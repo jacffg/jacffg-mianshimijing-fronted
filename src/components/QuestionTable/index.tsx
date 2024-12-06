@@ -27,7 +27,7 @@ const QuestionTable: React.FC = (props: Props) => {
   const actionRef = useRef<ActionType>();
   // 题目列表
   const [questionList, setQuestionList] = useState<API.QuestionVO[]>(
-    defaultQuestionList || [],
+      defaultQuestionList || [],
   );
   // 题目总数
   const [total, setTotal] = useState<number>(defaultTotal || 0);
@@ -54,72 +54,72 @@ const QuestionTable: React.FC = (props: Props) => {
         mode: "tags",
       },
       render: (_, record) => (
-        <Space>
-          <>
-            {!record?.isvip && <VIPTag />}
-            <TagList tagList={record.tagList} />
-          </>
-        </Space>
+          <Space>
+            <>
+              {!record?.isvip && <VIPTag />}
+              <TagList tagList={record.tagList} />
+            </>
+          </Space>
       ),
     },
   ];
 
   return (
-    <div className="question-table">
-      <ProTable<API.QuestionVO>
-        actionRef={actionRef}
-        size="large"
-        search={{
-          labelWidth: "auto",
-        }}
-        form={{
-          initialValues: defaultSearchParams,
-        }}
-        dataSource={questionList}
-        pagination={
-          {
-            pageSize: 12,
-            showTotal: (total) => `总共 ${total} 条`,
-            showSizeChanger: false,
-            total,
-          } as TablePaginationConfig
-        }
-        request={async (params, sort, filter) => {
-          // 首次请求
-          if (init) {
-            setInit(false);
-            // 如果已有外层传来的默认数据，无需再次查询
-            if (defaultQuestionList && defaultTotal) {
-              return;
+      <div className="question-table">
+        <ProTable<API.QuestionVO>
+            actionRef={actionRef}
+            size="large"
+            search={{
+              labelWidth: "auto",
+            }}
+            form={{
+              initialValues: defaultSearchParams,
+            }}
+            dataSource={questionList}
+            pagination={
+              {
+                pageSize: 12,
+                showTotal: (total) => `总共 ${total} 条`,
+                showSizeChanger: false,
+                total,
+              } as TablePaginationConfig
             }
-          }
+            request={async (params, sort, filter) => {
+              // 首次请求
+              if (init) {
+                setInit(false);
+                // 如果已有外层传来的默认数据，无需再次查询
+                if (defaultQuestionList && defaultTotal) {
+                  return;
+                }
+              }
 
-          const sortField = Object.keys(sort)?.[0] || "createTime";
-          const sortOrder = sort?.[sortField] || "descend";
+              const sortField = Object.keys(sort)?.[0] || "createTime";
+              const sortOrder = sort?.[sortField] || "descend";
 
-          const { data, code } = await listQuestionVoByPageUsingPost({
-            ...params,
-            sortField,
-            sortOrder,
-            ...filter,
-          } as API.QuestionQueryRequest);
+              const { data, code } = await listQuestionVoByPageUsingPost({
+                ...params,
+                sortField,
+                sortOrder,
+                ...filter,
+              } as API.QuestionQueryRequest);
 
-          // 更新结果
-          const newData = data?.records || [];
-          const newTotal = data?.total || 0;
-          // 更新状态
-          setQuestionList(newData);
-          setTotal(newTotal);
+              // 更新结果
+              const newData = data?.records || [];
+              const newTotal = data?.total || 0;
+              // 更新状态
+              setQuestionList(newData);
+              setTotal(newTotal);
 
-          return {
-            success: code === 0,
-            data: newData,
-            total: newTotal,
-          };
-        }}
-        columns={columns}
-      />
-    </div>
+              return {
+                success: code === 0,
+                data: newData,
+                total: newTotal,
+              };
+            }}
+            columns={columns}
+        />
+      </div>
   );
 };
 export default QuestionTable;

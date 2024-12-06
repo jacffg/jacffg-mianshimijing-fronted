@@ -59,7 +59,7 @@ export default function BasicLayout({ children }: Props) {
       await userLogoutUsingPost();
       message.success("已退出登录");
       dispatch(setLoginUser(DEFAULT_USER));
-      router.push("/user/login");
+      // router.push("/user/login");
     } catch (e) {
       message.error("操作失败，" + e.message);
     }

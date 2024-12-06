@@ -34,6 +34,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListMyCommentVO_ = {
+    code?: number;
+    data?: MyCommentVO[];
+    message?: string;
+  };
+
   type BaseResponseListQuestionFavourCountDTO_ = {
     code?: number;
     data?: QuestionFavourCountDTO[];
@@ -136,6 +142,18 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponsePageRedeem_ = {
+    code?: number;
+    data?: PageRedeem_;
+    message?: string;
+  };
+
+  type BaseResponsePageRedeemVO_ = {
+    code?: number;
+    data?: PageRedeemVO_;
+    message?: string;
+  };
+
   type BaseResponsePageUser_ = {
     code?: number;
     data?: PageUser_;
@@ -175,6 +193,12 @@ declare namespace API {
   type BaseResponseQuestionVO_ = {
     code?: number;
     data?: QuestionVO;
+    message?: string;
+  };
+
+  type BaseResponseRedeemVO_ = {
+    code?: number;
+    data?: RedeemVO;
     message?: string;
   };
 
@@ -269,6 +293,10 @@ declare namespace API {
     id?: number;
   };
 
+  type ExchangeRequest = {
+    code?: string;
+  };
+
   type getCommentByQuestionIdUsingGETParams = {
     /** questionId */
     questionId?: number;
@@ -334,6 +362,11 @@ declare namespace API {
     id?: number;
   };
 
+  type getRedeemVOByIdUsingGETParams = {
+    /** id */
+    id?: number;
+  };
+
   type getUserByIdUsingGETParams = {
     /** id */
     id?: number;
@@ -358,6 +391,15 @@ declare namespace API {
     userName?: string;
     userProfile?: string;
     userRole?: string;
+  };
+
+  type MyCommentVO = {
+    content?: string;
+    id?: number;
+    questionId?: number;
+    questionNum?: number;
+    questionTitle?: string;
+    updateTime?: string;
   };
 
   type OrderItem = {
@@ -516,6 +558,32 @@ declare namespace API {
     orders?: OrderItem[];
     pages?: number;
     records?: QuestionVO[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageRedeem_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: Redeem[];
+    searchCount?: boolean;
+    size?: number;
+    total?: number;
+  };
+
+  type PageRedeemVO_ = {
+    countId?: string;
+    current?: number;
+    maxLimit?: number;
+    optimizeCountSql?: boolean;
+    orders?: OrderItem[];
+    pages?: number;
+    records?: RedeemVO[];
     searchCount?: boolean;
     size?: number;
     total?: number;
@@ -890,6 +958,57 @@ declare namespace API {
     user?: UserVO;
     userId?: number;
     viewNum?: number;
+  };
+
+  type Redeem = {
+    code?: string;
+    createTime?: string;
+    id?: number;
+    isDelete?: number;
+    updateTime?: string;
+    useTime?: string;
+    userId?: number;
+  };
+
+  type RedeemAddRequest = {
+    code?: string;
+    useTime?: string;
+    userId?: number;
+  };
+
+  type RedeemEditRequest = {
+    code?: string;
+    id?: number;
+    useTime?: string;
+    userId?: number;
+  };
+
+  type RedeemQueryRequest = {
+    code?: string;
+    current?: number;
+    id?: number;
+    pageSize?: number;
+    sortField?: string;
+    sortOrder?: string;
+    useTime?: string;
+    userId?: number;
+  };
+
+  type RedeemUpdateRequest = {
+    code?: string;
+    id?: number;
+    useTime?: string;
+    userId?: number;
+  };
+
+  type RedeemVO = {
+    code?: string;
+    createTime?: string;
+    id?: number;
+    updateTime?: string;
+    useTime?: string;
+    user?: UserVO;
+    userId?: number;
   };
 
   type uploadFileUsingPOSTParams = {
