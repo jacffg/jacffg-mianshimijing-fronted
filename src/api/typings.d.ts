@@ -963,8 +963,10 @@ declare namespace API {
   type Redeem = {
     code?: string;
     createTime?: string;
+    expirationTime?: string;
     id?: number;
     isDelete?: number;
+    isUsed?: number;
     updateTime?: string;
     useTime?: string;
     userId?: number;
@@ -972,13 +974,17 @@ declare namespace API {
 
   type RedeemAddRequest = {
     code?: string;
+    expirationTime?: string;
+    isUsed?: number;
     useTime?: string;
     userId?: number;
   };
 
   type RedeemEditRequest = {
     code?: string;
+    expirationTime?: string;
     id?: number;
+    isUsed?: number;
     useTime?: string;
     userId?: number;
   };
@@ -986,7 +992,9 @@ declare namespace API {
   type RedeemQueryRequest = {
     code?: string;
     current?: number;
+    expirationTime?: string;
     id?: number;
+    isUsed?: number;
     pageSize?: number;
     sortField?: string;
     sortOrder?: string;
@@ -996,7 +1004,9 @@ declare namespace API {
 
   type RedeemUpdateRequest = {
     code?: string;
+    expirationTime?: string;
     id?: number;
+    isUsed?: number;
     useTime?: string;
     userId?: number;
   };
@@ -1004,7 +1014,9 @@ declare namespace API {
   type RedeemVO = {
     code?: string;
     createTime?: string;
+    expirationTime?: string;
     id?: number;
+    isUsed?: number;
     updateTime?: string;
     useTime?: string;
     user?: UserVO;

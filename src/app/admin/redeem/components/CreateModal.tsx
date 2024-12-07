@@ -18,6 +18,12 @@ interface Props {
 const handleAdd = async (fields: API.UserAddRequest) => {
   const hide = message.loading('正在添加');
   try {
+    // 检查并处理过期时间字段
+    if (fields?.expirationTime) {
+      // 假设 fields.expirationTime 是一个日期对象或日期字符串
+      const expirationTime = new Date(fields.expirationTime);
+      fields.expirationTime = expirationTime.toISOString(); // 转为 ISO 格式字符串
+    }
     await addRedeemUsingPost(fields);
     hide();
     message.success('创建成功');

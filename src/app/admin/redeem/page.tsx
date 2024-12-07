@@ -10,7 +10,10 @@ import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
 import { Button, message, Modal, Space, Typography } from "antd";
 import React, { useRef, useState } from "react";
-import {deleteRedeemUsingPost, listRedeemVoByPageUsingPost} from "@/api/redeemController";
+import {
+  deleteRedeemUsingPost,
+  listRedeemVoByPageUsingPost,
+} from "@/api/redeemController";
 
 /**
  * 用户管理页面
@@ -73,6 +76,18 @@ const RedeemAdminPage: React.FC = () => {
       valueType: "text",
     },
     {
+      title: "是否被使用",
+      dataIndex: "isUsed",
+      valueEnum: {
+        0: {
+          text: "否",
+        },
+        1: {
+          text: "是",
+        },
+      },
+    },
+    {
       title: "使用用户",
       dataIndex: "userId",
       valueType: "text",
@@ -81,6 +96,12 @@ const RedeemAdminPage: React.FC = () => {
       title: "使用时间",
       sorter: true,
       dataIndex: "useTime",
+      valueType: "dateTime",
+    },
+    {
+      title: "过期时间",
+      sorter: true,
+      dataIndex: "expirationTime",
       valueType: "dateTime",
     },
     {
@@ -144,6 +165,8 @@ const RedeemAdminPage: React.FC = () => {
         request={async (params, sort, filter) => {
           const sortField = Object.keys(sort)?.[0];
           const sortOrder = sort?.[sortField] ?? undefined;
+
+
           const { data, code } = await listRedeemVoByPageUsingPost({
             ...params,
             sortField,

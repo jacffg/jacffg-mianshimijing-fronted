@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import {Input, Button, message, Card, Typography, Flex} from "antd";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDispatch, RootState } from "@/stores";
@@ -36,6 +36,9 @@ const BeVip: React.FC = () => {
       message.error("兑换失败，" + e.message);
     }
   };
+  useEffect(() => {
+    setUserRole(loginUser.userRole);
+  }, [loginUser]);
 
   const handleExchange = async () => {
     setLoading(true);

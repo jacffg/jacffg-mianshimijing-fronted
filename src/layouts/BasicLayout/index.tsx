@@ -121,7 +121,7 @@ export default function BasicLayout({ children }: Props) {
               return (
                 <div
                   onClick={() => {
-                    router.push("/user/login");
+                    router.push(`/user/login?url=${pathname}`);
                   }}
                 >
                   {dom}

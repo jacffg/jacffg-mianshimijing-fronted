@@ -20,6 +20,12 @@ interface Props {
 const handleUpdate = async (fields: API.UserUpdateRequest) => {
   const hide = message.loading('正在更新');
   try {
+    // 检查并处理过期时间字段
+    if (fields?.expirationTime) {
+      // 假设 fields.expirationTime 是一个日期对象或日期字符串
+      const expirationTime = new Date(fields.expirationTime);
+      fields.expirationTime = expirationTime.toISOString(); // 转为 ISO 格式字符串
+    }
     await updateRedeemUsingPost(fields);
     hide();
     message.success('更新成功');
