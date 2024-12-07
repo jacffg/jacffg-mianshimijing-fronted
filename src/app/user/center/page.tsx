@@ -32,6 +32,7 @@ import Image from "next/image";
 import FavourQuestionTable from "@/components/FavourQuestionTable";
 import MyCommnets from "@/components/MyCommnets";
 import BeVip from "@/components/BeVIP";
+import CalendarChart from "@/components/CalendarChart";
 
 /**
  * 用户中心页面
@@ -231,7 +232,7 @@ export default function UserCenterPage() {
               </Flex>
             </div>
             <Divider />
-            <Avatar src={user.userAvatar|| "/assets/logo.png"} size={72} />
+            <Avatar src={user.userAvatar || "/assets/logo.png"} size={72} />
             <div style={{ marginBottom: 16 }} />
             <Meta
               title={
@@ -281,7 +282,7 @@ export default function UserCenterPage() {
             tabList={[
               {
                 key: "record",
-                label: "刷题记录",
+                label: "签到纪录",
               },
               {
                 key: "favour",
@@ -300,9 +301,13 @@ export default function UserCenterPage() {
             onTabChange={(key: string) => {
               setActiveTabKey(key);
             }}
-            style={{ width: 900 }}
+            style={{ width: 915 }}
           >
-            {activeTabKey === "record" && <>aaa</>}
+            {activeTabKey === "record" && (
+              <>
+                <CalendarChart />
+              </>
+            )}
             {activeTabKey === "favour" && (
               <>
                 <div>
@@ -318,11 +323,11 @@ export default function UserCenterPage() {
               </>
             )}
             {activeTabKey === "beVip" && (
-                <>
-                  <div>
-                    <BeVip />
-                  </div>
-                </>
+              <>
+                <div>
+                  <BeVip />
+                </div>
+              </>
             )}
           </Card>
         </Col>

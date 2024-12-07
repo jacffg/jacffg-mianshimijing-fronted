@@ -34,6 +34,12 @@ declare namespace API {
     message?: string;
   };
 
+  type BaseResponseListInt_ = {
+    code?: number;
+    data?: number[];
+    message?: string;
+  };
+
   type BaseResponseListMyCommentVO_ = {
     code?: number;
     data?: MyCommentVO[];
@@ -370,6 +376,11 @@ declare namespace API {
   type getUserByIdUsingGETParams = {
     /** id */
     id?: number;
+  };
+
+  type getUserSignInRecordUsingGETParams = {
+    /** year */
+    year?: number;
   };
 
   type getUserVOByIdUsingGETParams = {

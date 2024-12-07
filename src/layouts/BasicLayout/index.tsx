@@ -39,6 +39,7 @@ export default function BasicLayout({ children }: Props) {
   // const [isVIP, setIsVIP] = useState(false);
   const isVIP = loginUser.userRole === ACCESS_ENUM.VIP;
 
+
   const [isHovered, setIsHovered] = useState(false);
   const [isHoverCard, setIsHoverCard] = useState(false);
   const [isHovered2, setIsHovered2] = useState(false);
