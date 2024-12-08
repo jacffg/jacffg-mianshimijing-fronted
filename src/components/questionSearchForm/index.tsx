@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 import { Input, message, Select, Button, Tag, Dropdown, Menu, Space } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
+import {listQuestionVoByPageUsingPost, searchQuestionVoByPageUsingPost} from "@/api/questionController";
 import "./index.css"; // 引入 CSS 文件
 
 // 定义 Props 接口
@@ -89,14 +89,15 @@ const QuestionRequestForm: React.FC<Props> = ({
   const handleSearch = async () => {
     const request: API.QuestionQueryRequest = {
       questionBankId: questionBankId ? Number(questionBankId) : undefined,
-      title: title || undefined,
+      searchText: title || undefined,
+      title:title,
       isVip: membership === "true" ? 0 : membership === "false" ? 1 : undefined,
       tags: tags.length > 0 ? tags : undefined,
       diffity: difficulty || undefined,
       pageSize:199
     };
     try {
-      const res = await listQuestionVoByPageUsingPost(request);
+      const res = await searchQuestionVoByPageUsingPost(request);
       console.log(res.data.records);
       setQuestionList(res.data?.records ?? []);
       onSearch(res.data?.records ?? []);
@@ -181,9 +182,9 @@ const QuestionRequestForm: React.FC<Props> = ({
               />
             </div>
             <div style={{ display: "flex", alignItems: "center" }}>
-              <label style={{ marginRight: "8px" }}>题目：</label>
+              <label style={{ marginRight: "8px" }}>搜索：</label>
               <Input
-                  placeholder="请输入题目"
+                  placeholder="请输入搜索词"
                   value={title}
                   onChange={(e) => setTitle(e.target.value)}
                   onPressEnter={handleSearch} // 添加 onPressEnter 事件处理函数

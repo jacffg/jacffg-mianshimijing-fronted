@@ -57,6 +57,7 @@ import {
   editQuestionMarkUsingPost,
   getMarkUsingGet
 } from "@/api/questionMarkController";
+import useAddUserSignInRecord from "@/hooks/useAddUserSignInRecord";
 
 interface Props {
   defaultQuestion: API.QuestionVO;
@@ -259,6 +260,8 @@ const QuestionCard = (props: Props) => {
       setState(false);
     }, 200); // 延迟 0.5 秒
   };
+  //签到
+  useAddUserSignInRecord();
   // @ts-ignore
   return (
     <div className="question-card" style={{ width: "1100px" }}>

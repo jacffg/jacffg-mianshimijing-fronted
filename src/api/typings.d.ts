@@ -925,6 +925,7 @@ declare namespace API {
     notId?: number;
     pageSize?: number;
     questionBankId?: number;
+    questionNum?: number;
     searchText?: string;
     sortField?: string;
     sortOrder?: string;
