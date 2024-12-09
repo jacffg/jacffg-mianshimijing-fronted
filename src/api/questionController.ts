@@ -47,6 +47,21 @@ export async function deleteQuestionUsingPost(
   });
 }
 
+/** batchDeleteQuestions POST /api/question/delete/batch */
+export async function batchDeleteQuestionsUsingPost(
+  body: API.QuestionBatchDeleteRequest,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/question/delete/batch', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** editQuestion POST /api/question/edit */
 export async function editQuestionUsingPost(
   body: API.QuestionEditRequest,
@@ -104,6 +119,42 @@ export async function getHotQuestionsUsingGet(options?: { [key: string]: any }) 
 export async function getHotTagsUsingGet(options?: { [key: string]: any }) {
   return request<API.BaseResponseListHotTagsVO_>('/api/question/hot/tags', {
     method: 'GET',
+    ...(options || {}),
+  });
+}
+
+/** importQuestions POST /api/question/import */
+export async function importQuestionsUsingPost(
+  body: {},
+  file?: File,
+  options?: { [key: string]: any },
+) {
+  const formData = new FormData();
+
+  if (file) {
+    formData.append('file', file);
+  }
+
+  Object.keys(body).forEach((ele) => {
+    const item = (body as any)[ele];
+
+    if (item !== undefined && item !== null) {
+      if (typeof item === 'object' && !(item instanceof File)) {
+        if (item instanceof Array) {
+          item.forEach((f) => formData.append(ele, f || ''));
+        } else {
+          formData.append(ele, JSON.stringify(item));
+        }
+      } else {
+        formData.append(ele, item);
+      }
+    }
+  });
+
+  return request<API.BaseResponseString_>('/api/question/import', {
+    method: 'POST',
+    data: formData,
+    requestType: 'form',
     ...(options || {}),
   });
 }

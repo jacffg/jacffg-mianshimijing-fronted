@@ -2,20 +2,23 @@
 import CreateModal from "./components/CreateModal";
 import UpdateModal from "./components/UpdateModal";
 import {
-  deleteQuestionUsingPost,
+  batchDeleteQuestionsUsingPost,
+  deleteQuestionUsingPost, importQuestionsUsingPost,
   listQuestionByPageUsingPost,
 } from "@/api/questionController";
 import { AntDesignOutlined, PlusOutlined } from "@ant-design/icons";
 import type { ActionType, ProColumns } from "@ant-design/pro-components";
 import { PageContainer, ProTable } from "@ant-design/pro-components";
-import { Button, message, Modal, Space, Typography } from "antd";
+import {Button, message, Modal, Popconfirm, Space, Table, Typography, Upload} from "antd";
 import React, { useRef, useState } from "react";
 import TagList from "@/components/TagList";
 import MdEditor from "@/components/MdEditor";
 import UpdateBankModal from "@/app/admin/question/components/UpdateBankModal";
 import "./index.css";
 import VIPTag from "@/components/VIPTag";
-import {listQuestionBankVoByPageUsingPost} from "@/api/questionBankController";
+import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
+import BatchAddQuestionsToBankModal from "@/app/admin/question/components/BatchAddQuestionsToBankModal";
+import BatchRemoveQuestionsFromBankModal from "@/app/admin/question/components/BatchRemoveQuestionsFromBankModal";
 
 /**
  * 题目管理页面
@@ -33,7 +36,22 @@ const QuestionAdminPage: React.FC = () => {
   const actionRef = useRef<ActionType>();
   // 当前题目点击的数据
   const [currentRow, setCurrentRow] = useState<API.Question>();
-
+  // 是否显示批量向题库添加题目弹窗
+  const [
+    batchAddQuestionsToBankModalVisible,
+    setBatchAddQuestionsToBankModalVisible,
+  ] = useState<boolean>(false);
+  // 是否显示批量从题库移除题目弹窗
+  const [
+    batchRemoveQuestionsFromBankModalVisible,
+    setBatchRemoveQuestionsFromBankModalVisible,
+  ] = useState<boolean>(false);
+  // 当前选中的题目 id 列表
+  const [selectedQuestionIdList, setSelectedQuestionIdList] = useState<
+    number[]
+  >([]);
+  const [imprtModalVisible, setImprtModalVisible] = useState(false); // 控制 Modal 显示
+  const [fileList, setFileList] = useState([]); // 保存文件列表
   /**
    * 删除节点
    *
@@ -63,6 +81,41 @@ const QuestionAdminPage: React.FC = () => {
       },
     });
   };
+  /**
+   * 批量删除节点
+   *
+   * @param questionIdList
+   */
+  const handleBatchDelete = async (questionIdList: number[]) => {
+    const hide = message.loading("正在操作");
+    try {
+      await batchDeleteQuestionsUsingPost({
+        questionIdList,
+      });
+      hide();
+      message.success("操作成功");
+    } catch (error: any) {
+      hide();
+      message.error("操作失败，" + error.message);
+    }
+  };
+  // 处理文件上传
+  const handleUpload = async (file) => {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    try {
+      const res = await importQuestionsUsingPost({}, file); // 传递文件
+      if (res.code === 0) {
+        message.success('上传成功');
+      } else {
+        message.error('上传失败');
+      }
+    } catch (error) {
+      message.error('上传失败，请重试');
+    }
+  };
+
   /**
    * 表格列配置
    */
@@ -156,19 +209,22 @@ const QuestionAdminPage: React.FC = () => {
           { label: "JavaScript", value: "JavaScript" },
           { label: "布局", value: "布局" },
           { label: "CSS", value: "CSS" },
+          { label: "Java", value: "Java" },
         ];
         return tags;
       },
       render: (_, record) => {
         const tagList = JSON.parse(record.tags || "[]");
-        return <div>
-          <Space>
-            <>
-              {record?.isVip == 0 && <VIPTag />}
-              <TagList tagList={tagList} />
-            </>
-          </Space>
-        </div>
+        return (
+          <div>
+            <Space>
+              <>
+                {record?.isVip == 0 && <VIPTag />}
+                <TagList tagList={tagList} />
+              </>
+            </Space>
+          </div>
+        );
       },
     },
     {
@@ -186,23 +242,23 @@ const QuestionAdminPage: React.FC = () => {
         },
       },
       render: (text, record) => (
-          <span
-              style={{
-                color:
-                    record.diffity === "easy"
-                        ? "green"
-                        : record.diffity === "middle"
-                            ? "#ee9e0b"
-                            : "red",
-                fontSize: '16px',
-                fontWeight: 'bold'  // 添加这行使文本加粗
-              }}
-          >
+        <span
+          style={{
+            color:
+              record.diffity === "easy"
+                ? "green"
+                : record.diffity === "middle"
+                  ? "#ee9e0b"
+                  : "red",
+            fontSize: "16px",
+            fontWeight: "bold", // 添加这行使文本加粗
+          }}
+        >
           {record.diffity === "easy"
-              ? "简单"
-              : record.diffity === "middle"
-                  ? "中等"
-                  : "困难"}
+            ? "简单"
+            : record.diffity === "middle"
+              ? "中等"
+              : "困难"}
         </span>
       ),
     },
@@ -255,7 +311,7 @@ const QuestionAdminPage: React.FC = () => {
       dataIndex: "option",
       valueType: "option",
       render: (_, record) => (
-        <Space size="small" >
+        <Space size="small">
           <Button
             style={{ color: "rgba(26,78,171,0.94)" }}
             onClick={() => {
@@ -287,12 +343,81 @@ const QuestionAdminPage: React.FC = () => {
       <ProTable<API.Question>
         headerTitle={"题目管理表格"}
         actionRef={actionRef}
-        rowKey="key"
         scroll={{
           x: true,
         }}
         search={{
           labelWidth: 120,
+        }}
+        rowKey="id"
+        rowSelection={{
+          // 自定义选择项参考: https://ant.design/components/table-cn/#components-table-demo-row-selection-custom
+          // 注释该行则默认不显示下拉选项
+          selections: [Table.SELECTION_ALL, Table.SELECTION_INVERT],
+        }}
+        tableAlertRender={({
+          selectedRowKeys,
+          selectedRows,
+          onCleanSelected,
+        }) => {
+          console.log(selectedRowKeys, selectedRows);
+          return (
+            <Space size={24}>
+              <span>
+                已选 {selectedRowKeys.length} 项
+                <a style={{ marginInlineStart: 8 }} onClick={onCleanSelected}>
+                  取消选择
+                </a>
+              </span>
+            </Space>
+          );
+        }}
+        tableAlertOptionRender={({
+          selectedRowKeys,
+          selectedRows,
+          onCleanSelected,
+        }) => {
+          return (
+            <Space size={16}>
+              <Button
+                onClick={() => {
+                  // 打开弹窗
+                  setSelectedQuestionIdList(selectedRowKeys as number[]);
+                  setBatchAddQuestionsToBankModalVisible(true);
+                }}
+              >
+                批量向题库添加题目
+              </Button>
+              <Button
+                onClick={() => {
+                  // 打开弹窗
+                  setSelectedQuestionIdList(selectedRowKeys as number[]);
+                  setBatchRemoveQuestionsFromBankModalVisible(true);
+                }}
+              >
+                批量从题库移除题目
+              </Button>
+              <Popconfirm
+                title="确认删除"
+                description="你确定要删除这些题目么？"
+                onConfirm={() => {
+                  // 批量删除
+                  handleBatchDelete(selectedRowKeys as number[]);
+                }}
+                okText="确认"
+                cancelText="取消"
+              >
+                <Button
+                  danger
+                  onClick={() => {
+                    // 打开弹窗
+                  }}
+                >
+                  批量删除题目
+                </Button>
+              </Popconfirm>
+            </Space>
+          );
         }}
         toolBarRender={() => [
           <Button
@@ -303,6 +428,15 @@ const QuestionAdminPage: React.FC = () => {
             }}
           >
             <PlusOutlined /> 新建
+          </Button>,
+          <Button
+              type="primary"
+              key="primary"
+              onClick={() => {
+                setImprtModalVisible(true);
+              }}
+          >
+            <PlusOutlined /> 批量导入
           </Button>,
         ]}
         request={async (params, sort, filter) => {
@@ -358,6 +492,47 @@ const QuestionAdminPage: React.FC = () => {
           setUpdateBankModalVisible(false);
         }}
       />
+      <BatchAddQuestionsToBankModal
+          visible={batchAddQuestionsToBankModalVisible}
+          questionIdList={selectedQuestionIdList}
+          onSubmit={() => {
+            setBatchAddQuestionsToBankModalVisible(false);
+          }}
+          onCancel={() => {
+            setBatchAddQuestionsToBankModalVisible(false);
+          }}
+      />
+      <BatchRemoveQuestionsFromBankModal
+          visible={batchRemoveQuestionsFromBankModalVisible}
+          questionIdList={selectedQuestionIdList}
+          onSubmit={() => {
+            setBatchRemoveQuestionsFromBankModalVisible(false);
+          }}
+          onCancel={() => {
+            setBatchRemoveQuestionsFromBankModalVisible(false);
+          }}
+      />
+      {/* 弹出 Modal */}
+      <Modal
+          title="批量导入"
+          visible={imprtModalVisible}
+          onCancel={() => setImprtModalVisible(false)}
+          footer={null}
+      >
+        <Upload
+            fileList={fileList}
+            beforeUpload={(file) => {
+              // 在上传前处理文件
+              handleUpload(file);
+              // 这里可以决定是否上传
+              return false; // false 代表不自动上传
+            }}
+            onChange={({ fileList }) => setFileList(fileList)} // 更新文件列表
+            accept=".xlsx, .xls" // 设置文件接受类型
+        >
+          <Button icon={<PlusOutlined />}>选择文件</Button>
+        </Upload>
+      </Modal>
     </PageContainer>
   );
 };
