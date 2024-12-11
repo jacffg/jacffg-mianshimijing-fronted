@@ -12,7 +12,7 @@ import {
 } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
+import {listQuestionVoByPageSentinelUsingPost, listQuestionVoByPageUsingPost} from "@/api/questionController";
 
 // 定义 Props 接口
 interface Props
@@ -104,7 +104,7 @@ const BankQuestionRequestForm: React.FC<Props> = ({
       diffity: difficulty || undefined,
     };
     try {
-      const res = await listQuestionVoByPageUsingPost(request);
+      const res = await listQuestionVoByPageSentinelUsingPost(request);
       setQuestionList(res.data?.records ?? []);
       onSearch(res.data?.records ?? []);
     } catch (e) {

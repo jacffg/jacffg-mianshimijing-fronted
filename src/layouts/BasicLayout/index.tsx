@@ -162,7 +162,7 @@ export default function BasicLayout({ children }: Props) {
               <SearchInput key="search" />,
               <a
                 key="github"
-                href="https://github.com/liyupi/mianshiya-next"
+                href="https://github.com/jacffg"
                 target="_blank"
                 style={{ width: 100, height: 45 }}
               >
@@ -195,7 +195,7 @@ export default function BasicLayout({ children }: Props) {
             <SearchInput key="search" />,
             <a
               key="github"
-              href="https://github.com/liyupi/mianshiya-next"
+              href="https://github.com/jacffg"
               target="_blank"
             >
               <GithubFilled key="GithubFilled" />
