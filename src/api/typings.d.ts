@@ -1078,6 +1078,11 @@ declare namespace API {
     userRole?: string;
   };
 
+  type UserBanRequest = {
+    banTime?: number;
+    userId?: number;
+  };
+
   type userLoginByWxOpenUsingGETParams = {
     /** code */
     code: string;
@@ -1105,6 +1110,11 @@ declare namespace API {
     checkPassword?: string;
     userAccount?: string;
     userPassword?: string;
+  };
+
+  type userUnBanUsingPOSTParams = {
+    /** userId */
+    userId?: number;
   };
 
   type UserUpdateMyRequest = {

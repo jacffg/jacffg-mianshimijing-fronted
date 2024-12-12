@@ -23,11 +23,6 @@ export const menus = [
     access: ACCESS_ENUM.USER,
   },
   {
-    name: "面试鸭",
-    path: "https://mianshiya.com",
-    target: "_blank",
-  },
-  {
     path: "/admin",
     name: "管理",
     icon: <CrownOutlined />,

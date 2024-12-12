@@ -22,6 +22,18 @@ export async function addUserSignInUsingPost(options?: { [key: string]: any }) {
   });
 }
 
+/** userBan POST /api/user/ban */
+export async function userBanUsingPost(body: API.UserBanRequest, options?: { [key: string]: any }) {
+  return request<API.BaseResponseBoolean_>('/api/user/ban', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    data: body,
+    ...(options || {}),
+  });
+}
+
 /** deleteUser POST /api/user/delete */
 export async function deleteUserUsingPost(
   body: API.DeleteRequest,
@@ -169,6 +181,21 @@ export async function userRegisterUsingPost(
       'Content-Type': 'application/json',
     },
     data: body,
+    ...(options || {}),
+  });
+}
+
+/** userUnBan POST /api/user/unban */
+export async function userUnBanUsingPost(
+  // 叠加生成的Param类型 (非body参数swagger默认没有生成对象)
+  params: API.userUnBanUsingPOSTParams,
+  options?: { [key: string]: any },
+) {
+  return request<API.BaseResponseBoolean_>('/api/user/unban', {
+    method: 'POST',
+    params: {
+      ...params,
+    },
     ...(options || {}),
   });
 }

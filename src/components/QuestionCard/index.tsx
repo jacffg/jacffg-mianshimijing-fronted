@@ -73,7 +73,7 @@ const QuestionCard = (props: Props) => {
   const router = useRouter();
   const { defaultQuestion, questionBankId } = props;
   // 使用 useState 来设置内部的 question 状态
-  const [question, setQuestion] = useState<API.CommentVO>(defaultQuestion);
+  const [question, setQuestion] = useState<API.QuestionVO>(defaultQuestion);
   const [isAnswerVisible, setIsAnswerVisible] = useState(false); // 控制答案是否显示
   const loginUser = useSelector((state: RootState) => state.loginUser);
 
@@ -89,6 +89,7 @@ const QuestionCard = (props: Props) => {
     loginUser.userRole == ACCESS_ENUM.USER ||
     loginUser.userRole == ACCESS_ENUM.NOT_LOGIN; //是否为vip
   const isNotVisible = question.isVip == 0 && isNotVip;
+  // const isNotVisible = false;
   const isLogin = loginUser.userRole != ACCESS_ENUM.NOT_LOGIN;
 
   // 控制菜单栏 Tab
