@@ -4,7 +4,7 @@ import axios from "axios";
 const DEV_BASE_URL = "http://localhost:8101";
 const PROD_BASE_URL = "http://124.222.153.246";
 const myAxios = axios.create({
-  baseURL: DEV_BASE_URL,
+  baseURL: PROD_BASE_URL,
   timeout: 20000,
   withCredentials: true,
 });

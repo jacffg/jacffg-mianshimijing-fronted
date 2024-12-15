@@ -12,8 +12,9 @@ import {
 
 import React, { useEffect, useState } from "react";
 import {
-    addCommentUsingPost, deleteCommentUsingPost,
-    getCommentByQuestionIdUsingGet,
+  addCommentUsingPost,
+  deleteCommentUsingPost,
+  getCommentByQuestionIdUsingGet,
 } from "@/api/commentController";
 import Title from "antd/es/typography/Title";
 import dayjs from "dayjs";
@@ -72,8 +73,7 @@ const Comments: React.FC<Props> = (props) => {
       const res = await getCommentByQuestionIdUsingGet({
         questionId: questionId,
       });
-        setCommnets(res?.data || []);
-
+      setCommnets(res?.data || []);
     } catch (e) {
       message.error("获取题目评论失败" + e.message);
     }
@@ -83,9 +83,9 @@ const Comments: React.FC<Props> = (props) => {
     if (!questionId) {
       return;
     }
-    if (!loginUser.id){
-        message.error("请先登录");
-        return;
+    if (!loginUser.id) {
+      message.error("请先登录");
+      return;
     }
     try {
       const res = await addCommentUsingPost({
@@ -132,10 +132,10 @@ const Comments: React.FC<Props> = (props) => {
     if (!questionId) {
       return;
     }
-      if (!loginUser.id){
-          message.error("请先登录");
-          return;
-      }
+    if (!loginUser.id) {
+      message.error("请先登录");
+      return;
+    }
     if (!parentId) {
       return;
     }
@@ -160,10 +160,10 @@ const Comments: React.FC<Props> = (props) => {
     if (!id) {
       return;
     }
-      if (!loginUser.id){
-          message.error("请先登录");
-          return;
-      }
+    if (!loginUser.id) {
+      message.error("请先登录");
+      return;
+    }
     try {
       const res = await deleteCommentUsingPost({
         id: id,
@@ -207,9 +207,11 @@ const Comments: React.FC<Props> = (props) => {
             <div>
               <Typography.Paragraph
                 style={{
-                  marginTop: -5,
+                  marginTop: 2,
                   marginLeft: 0,
                   fontSize: 16,
+                  // borderColor:"red",
+                  // borderStyle:"solid",
                   lineHeight: 1.5, // 行高使文字不显得紧凑
                   color: "#333", // 设置文字颜色
                 }}
@@ -218,6 +220,7 @@ const Comments: React.FC<Props> = (props) => {
                   style={{
                     display: "flex",
                     alignItems: "center", // 垂直居中对齐
+                    height: 40,
                     flexWrap: "wrap", // 当内容过长时换行
                   }}
                 >
@@ -230,7 +233,13 @@ const Comments: React.FC<Props> = (props) => {
                   >
                     {replie.user?.userName}
                   </span>
-                  <div style={{ marginLeft: 4, marginTop: 1.5 }}>
+                  <div
+                    style={{
+                      marginLeft: 4,
+                      marginTop: -35,
+                        height: 20,
+                    }}
+                  >
                     {replie.user?.userRole !== ACCESS_ENUM.NOT_LOGIN &&
                       replie.user?.userRole !== ACCESS_ENUM.USER && (
                         <VIPTag size={5} padding={1.5} />
@@ -303,37 +312,37 @@ const Comments: React.FC<Props> = (props) => {
                     回复
                   </div>
                 </Col>
-                {loginUser.id==replie.user?.id&&(
-                    <div>
-                        {/* 删除按钮 */}
-                        <Col>
-                            <div
-                                onClick={() => doDelete(replie.id)} // 这里将参数传递给 respond 函数
-                                style={{
-                                    width: 50,
-                                    height: 25,
-                                    marginTop: -35,
-                                    marginLeft: 820,
-                                    color: "red",
-                                    display: "flex",
-                                    fontWeight: "bold",
-                                    justifyContent: "center", // 居中对齐
-                                    alignItems: "center", // 垂直居中
-                                    cursor: "pointer", // 手指样式
-                                    borderRadius: "4px", // 给按钮加上圆角
-                                    transition: "background-color 0.3s", // 平滑过渡效果
-                                }}
-                                onMouseEnter={(e) => {
-                                    e.target.style.backgroundColor = "#b4aa97"; // 悬浮时的背景颜色
-                                }}
-                                onMouseLeave={(e) => {
-                                    e.target.style.backgroundColor = "white"; // 恢复原始背景颜色
-                                }}
-                            >
-                                删除
-                            </div>
-                        </Col>
-                    </div>
+                {loginUser.id == replie.user?.id && (
+                  <div>
+                    {/* 删除按钮 */}
+                    <Col>
+                      <div
+                        onClick={() => doDelete(replie.id)} // 这里将参数传递给 respond 函数
+                        style={{
+                          width: 50,
+                          height: 25,
+                          marginTop: -35,
+                          marginLeft: 820,
+                          color: "red",
+                          display: "flex",
+                          fontWeight: "bold",
+                          justifyContent: "center", // 居中对齐
+                          alignItems: "center", // 垂直居中
+                          cursor: "pointer", // 手指样式
+                          borderRadius: "4px", // 给按钮加上圆角
+                          transition: "background-color 0.3s", // 平滑过渡效果
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = "#b4aa97"; // 悬浮时的背景颜色
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = "white"; // 恢复原始背景颜色
+                        }}
+                      >
+                        删除
+                      </div>
+                    </Col>
+                  </div>
                 )}
               </Row>
             </div>
@@ -446,38 +455,38 @@ const Comments: React.FC<Props> = (props) => {
                     回复
                   </div>
                 </Col>
-                    {loginUser.id==commet.user?.id&&(
-                        <div>
-                            {/* 删除按钮 */}
-                            <Col>
-                                <div
-                                    onClick={() => doDelete(commet.id)} // 这里将参数传递给 respond 函数
-                                    style={{
-                                        width: 50,
-                                        height: 25,
-                                        marginTop: -25,
-                                        marginLeft: 690,
-                                        color: "red",
-                                        display: "flex",
-                                        fontWeight: "bold",
-                                        justifyContent: "center", // 居中对齐
-                                        alignItems: "center", // 垂直居中
-                                        cursor: "pointer", // 手指样式
-                                        borderRadius: "4px", // 给按钮加上圆角
-                                        transition: "background-color 0.3s", // 平滑过渡效果
-                                    }}
-                                    onMouseEnter={(e) => {
-                                        e.target.style.backgroundColor = "#b4aa97"; // 悬浮时的背景颜色
-                                    }}
-                                    onMouseLeave={(e) => {
-                                        e.target.style.backgroundColor = "white"; // 恢复原始背景颜色
-                                    }}
-                                >
-                                    删除
-                                </div>
-                            </Col>
-                        </div>
-                    )}
+                {loginUser.id == commet.user?.id && (
+                  <div>
+                    {/* 删除按钮 */}
+                    <Col>
+                      <div
+                        onClick={() => doDelete(commet.id)} // 这里将参数传递给 respond 函数
+                        style={{
+                          width: 50,
+                          height: 25,
+                          marginTop: -25,
+                          marginLeft: 690,
+                          color: "red",
+                          display: "flex",
+                          fontWeight: "bold",
+                          justifyContent: "center", // 居中对齐
+                          alignItems: "center", // 垂直居中
+                          cursor: "pointer", // 手指样式
+                          borderRadius: "4px", // 给按钮加上圆角
+                          transition: "background-color 0.3s", // 平滑过渡效果
+                        }}
+                        onMouseEnter={(e) => {
+                          e.target.style.backgroundColor = "#b4aa97"; // 悬浮时的背景颜色
+                        }}
+                        onMouseLeave={(e) => {
+                          e.target.style.backgroundColor = "white"; // 恢复原始背景颜色
+                        }}
+                      >
+                        删除
+                      </div>
+                    </Col>
+                  </div>
+                )}
               </Row>
               <div>
                 {commet?.replies?.length > 0 && (
@@ -646,16 +655,16 @@ const Comments: React.FC<Props> = (props) => {
               }
             />
           </Card>
-            {comments && comments?.length > 0 && (
-                <List
-                    grid={{
-                        gutter: 10, // 设置行间距为 10px
-                        column: 1, // 每行显示 1 列
-                    }}
-                    dataSource={comments}
-                    renderItem={(item) => <List.Item>{CommentView(item)}</List.Item>}
-                />
-            )}
+          {comments && comments?.length > 0 && (
+            <List
+              grid={{
+                gutter: 10, // 设置行间距为 10px
+                column: 1, // 每行显示 1 列
+              }}
+              dataSource={comments}
+              renderItem={(item) => <List.Item>{CommentView(item)}</List.Item>}
+            />
+          )}
         </div>
       </Card>
     </div>

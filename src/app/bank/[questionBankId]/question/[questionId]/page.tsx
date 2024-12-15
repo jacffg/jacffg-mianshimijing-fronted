@@ -161,6 +161,8 @@ export default function BankQuestionPage({ params }) {
                 )}
               </Flex>
 
+              <div style={{marginBottom:16}}/>
+              <Comments questionId={question.id} />
             </Card>
           </div>
 

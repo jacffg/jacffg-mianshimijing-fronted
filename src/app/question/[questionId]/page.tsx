@@ -9,6 +9,7 @@ import Sider from "antd/es/layout/Sider";
 import HotQuestions from "@/components/HotQuestions";
 import RelatedQuestions from "@/components/RelatedQuestions";
 import {useEffect, useState} from "react";
+import Comments from "@/components/Comments/Comments";
 
 /**
  * 题目详情页
@@ -62,6 +63,8 @@ export default function QuestionPage({ params }) {
         <Flex gap={23}>
           <Content>
             <QuestionCard defaultQuestion={question} />
+            <div style={{marginBottom:16}}/>
+            <Comments questionId={questionId}/>
           </Content>
           <Col>
             <Sider

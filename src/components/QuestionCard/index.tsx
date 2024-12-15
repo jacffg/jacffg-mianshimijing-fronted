@@ -680,7 +680,7 @@ const QuestionCard = (props: Props) => {
             )}
           </Card>
           <div style={{ marginBottom: 16 }} />
-          <Comments questionId={question.id} />
+
         </div>
       )}
 
