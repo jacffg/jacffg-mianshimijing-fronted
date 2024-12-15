@@ -1,15 +1,15 @@
 "use client";
-import { LockOutlined, UserOutlined } from "@ant-design/icons";
-import { LoginForm, ProFormText } from "@ant-design/pro-components";
+import {LockOutlined, UserOutlined} from "@ant-design/icons";
+import {LoginForm, ProFormText} from "@ant-design/pro-components";
 import Image from "next/image";
 import Link from "next/link";
-import { userLoginUsingPost } from "@/api/userController";
-import { message } from "antd";
-import { useDispatch } from "react-redux";
-import { AppDispatch } from "@/stores";
-import { setLoginUser } from "@/stores/loginUser";
-import { ProForm } from "@ant-design/pro-form/lib";
-import { useRouter, useSearchParams } from "next/navigation";
+import {userLoginUsingPost} from "@/api/userController";
+import {message} from "antd";
+import {useDispatch} from "react-redux";
+import {AppDispatch} from "@/stores";
+import {setLoginUser} from "@/stores/loginUser";
+import {ProForm} from "@ant-design/pro-form/lib";
+import {useRouter} from "next/navigation";
 import "./index.css";
 
 /**
@@ -17,11 +17,10 @@ import "./index.css";
  * @constructor
  */
 const UserLoginPage: React.FC = () => {
-  const searchParams = useSearchParams(); // 获取查询参数
-  const url = searchParams.get("url") || ""; // 提取 URL 参数
   const [form] = ProForm.useForm();
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+
 
   /**
    * 提交
@@ -33,6 +32,8 @@ const UserLoginPage: React.FC = () => {
         message.success("登录成功");
         // 保存用户登录状态
         dispatch(setLoginUser(res.data));
+        // 从 URL 中解析查询参数
+        const url = new URLSearchParams(window.location.search).get("url");
         if (url) {
           router.push(url);
         } else {

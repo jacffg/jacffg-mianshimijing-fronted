@@ -83,6 +83,10 @@ const Comments: React.FC<Props> = (props) => {
     if (!questionId) {
       return;
     }
+    if (!loginUser.id){
+        message.error("请先登录");
+        return;
+    }
     try {
       const res = await addCommentUsingPost({
         questionId: questionId,
@@ -128,6 +132,10 @@ const Comments: React.FC<Props> = (props) => {
     if (!questionId) {
       return;
     }
+      if (!loginUser.id){
+          message.error("请先登录");
+          return;
+      }
     if (!parentId) {
       return;
     }
@@ -152,7 +160,10 @@ const Comments: React.FC<Props> = (props) => {
     if (!id) {
       return;
     }
-
+      if (!loginUser.id){
+          message.error("请先登录");
+          return;
+      }
     try {
       const res = await deleteCommentUsingPost({
         id: id,

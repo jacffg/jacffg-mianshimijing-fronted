@@ -10,6 +10,7 @@ import QuestionCard from "@/components/QuestionCard";
 import Link from "next/link";
 import "./index.css";
 import {CloseCircleOutlined, DoubleLeftOutlined, DoubleRightOutlined, SearchOutlined} from "@ant-design/icons";
+import Comments from "@/components/Comments/Comments";
 
 export default function BankQuestionPage({ params }) {
   const { questionBankId, questionId } = params;

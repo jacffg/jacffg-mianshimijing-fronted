@@ -1,16 +1,13 @@
-"use server";
+// "use server";
 import Title from "antd/es/typography/Title";
 import { Divider, Flex, message } from "antd";
 import Link from "next/link";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
-import { listQuestionVoByPageUsingPost } from "@/api/questionController";
 import QuestionBankList from "@/components/QuestionBankList";
 import QuestionList from "@/components/QuestionList";
 import "./index.css";
-import { VALUE } from "@typescript-eslint/scope-manager/dist/lib/base-config";
-import VIPTag from "@/components/VIPTag";
-import Test from "../components/questionSearchForm";
-import QuestionTablePlus from "@/components/QuestionTablePlus";
+
+export const dynamic = 'force-dynamic'
 
 /**
  * 主页
@@ -40,12 +37,16 @@ export default async function HomePage() {
 
   return (
     <div id="homePage" className="max-width-content">
-        <Flex align="center" style={{ gap: "1120px" }}>
-            {/* 使用 gap 设置子元素间距 */}
-            <Title level={3} style={{ margin: 0 }}>最新题库</Title>
-            <Link href={"/banks"} style={{ margin: 0 }}>查看更多</Link>
-        </Flex>
-        <div style={{marginBottom:10} }/>
+      <Flex align="center" style={{ gap: "1120px" }}>
+        {/* 使用 gap 设置子元素间距 */}
+        <Title level={3} style={{ margin: 0 }}>
+          最新题库
+        </Title>
+        <Link href={"/banks"} style={{ margin: 0 }}>
+          查看更多
+        </Link>
+      </Flex>
+      <div style={{ marginBottom: 10 }} />
 
       <QuestionBankList questionBankList={questionBankList} />
       <Divider />
@@ -56,3 +57,4 @@ export default async function HomePage() {
     </div>
   );
 }
+

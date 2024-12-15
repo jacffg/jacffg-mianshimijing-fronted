@@ -1,10 +1,11 @@
-"use server";
+// "use server";
 import Title from "antd/es/typography/Title";
 import { message } from "antd";
 import { listQuestionBankVoByPageUsingPost } from "@/api/questionBankController";
 import QuestionBankList from "@/components/QuestionBankList";
 import "./index.css";
 
+export const dynamic = 'force-dynamic'
 /**
  * 题库列表页面
  * @constructor
