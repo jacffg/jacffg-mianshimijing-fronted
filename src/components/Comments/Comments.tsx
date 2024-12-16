@@ -580,7 +580,7 @@ const Comments: React.FC<Props> = (props) => {
     );
   };
   return (
-    <div id="commentsPage" style={{ width: "1100px" }}>
+    <div id="commentsPage" style={{ width: "1200px" }}>
       <Card
         title={"回答讨论"}
         style={{
@@ -592,8 +592,8 @@ const Comments: React.FC<Props> = (props) => {
           <Card
             style={{
               border: "none", // 去掉卡片的边框
-              //  borderColor:"red",
-              //  borderStyle:"solid",
+               // borderColor:"red",
+               // borderStyle:"solid",
             }}
             // bodyStyle={{
             //     paddingTop: 0, // 缩短上方的内边距
@@ -616,7 +616,7 @@ const Comments: React.FC<Props> = (props) => {
                     borderRadius: "8px", // 圆角边框
                     border: "1px solid #f0f0f0", // 边框颜色
                     backgroundColor: "#ffffff", // 背景颜色
-                    maxWidth: "900px", // 最大宽度限制
+                    maxWidth: "1000px", // 最大宽度限制
                   }}
                 >
                   <TextArea

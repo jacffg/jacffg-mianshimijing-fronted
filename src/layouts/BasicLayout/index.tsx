@@ -162,7 +162,7 @@ export default function BasicLayout({ children }: Props) {
               <SearchInput key="search" />,
               <a
                 key="github"
-                href="https://github.com/jacffg"
+                href="/user/center"
                 target="_blank"
                 style={{ width: 100, height: 45 }}
               >

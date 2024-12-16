@@ -206,7 +206,7 @@ const QuestionCard = (props: Props) => {
           `/user/login?url=/bank/${questionBankId}/question/${question.id}`,
         );
       } else {
-        router.push(`/user/login?url=questions/${question.id}`);
+        router.push(`/user/login?url=/question/${question.id}`);
       }
     }
 
@@ -265,7 +265,7 @@ const QuestionCard = (props: Props) => {
   useAddUserSignInRecord();
   // @ts-ignore
   return (
-    <div className="question-card" style={{ width: "1100px" }}>
+    <div className="question-card" style={{ width: "1200px" }}>
       <Card>
         <Space>
           <Title level={1} style={{ fontSize: 24 }}>
@@ -299,7 +299,7 @@ const QuestionCard = (props: Props) => {
         <MdViewer value={question.content} />
         <Divider />
         <Space
-          size={250}
+          size={283}
           style={{
             fontSize: "16px",
             color: "#555",
@@ -634,7 +634,7 @@ const QuestionCard = (props: Props) => {
                 </div>
                 <Button
                   type="primary"
-                  href="/"
+                  href="/user/center"
                   style={{
                     display: "inline-flex",
                     alignItems: "center",

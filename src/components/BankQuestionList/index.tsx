@@ -42,7 +42,7 @@ const BankQuestionList = (props: Props) => {
           题目列表
         </span>
       }
-      style={{ width: 1200 }}
+      style={{ width: 1300 }}
     >
       <BankQuestionRequestForm
         questionBankId={questionBankId}

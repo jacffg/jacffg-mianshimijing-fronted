@@ -9,7 +9,7 @@ import React from "react";
  */
 const VIPForbidden = () => {
   return (
-    <div style={{ width: "1100px" }}>
+    <div style={{ width: "1200px" }}>
       <Card
         style={{
           textAlign: "center",
@@ -33,7 +33,7 @@ const VIPForbidden = () => {
         </div>
         <Button
           type="primary"
-          href="/"
+          href="/user/center"
           style={{
             display: "inline-flex",
             alignItems: "center",

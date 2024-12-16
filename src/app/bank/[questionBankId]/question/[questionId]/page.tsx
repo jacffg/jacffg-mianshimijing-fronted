@@ -136,36 +136,52 @@ export default function BankQuestionPage({ params }) {
         </Sider>
         <Content>
           <QuestionCard defaultQuestion={question} questionBankId={questionBankId}/>
-          <div  style={{width:"1100px"}}>
-            <Card>
+          <div  style={{width:"1200px"}}>
+            <Card style={{ position: 'relative' }}>
               <Space size={962}>
                 <span>上一题</span>
                 <span>下一题</span>
               </Space>
-              <div style={{marginBottom:16}}/>
+              <div style={{ marginBottom: 16 }} />
 
-              <Flex justify="space-between" align="center">
-                {prevQuestion ? (
-                    <a href={`/bank/${questionBankId}/question/${prevQuestion.id}`}>
-                      <DoubleLeftOutlined  disabled={false}/> {prevQuestion.title}
-                    </a>
-                ) : (
-                    <a><DoubleLeftOutlined /></a>
-                )}
-                {nextQuestion ? (
-                    <a href={`/bank/${questionBankId}/question/${nextQuestion.id}`}>
-                      {nextQuestion.title}  <DoubleRightOutlined />
-                    </a>
-                ) : (
-                    <a ><DoubleRightOutlined disabled={false} /></a>
-                )}
-              </Flex>
+              <div style={{ position: 'relative' }}>
+                {/* 上一题 */}
+                <div style={{ display: 'inline-block' }}>
+                  {prevQuestion ? (
+                      <a href={`/bank/${questionBankId}/question/${prevQuestion.id}`}>
+                        <DoubleLeftOutlined disabled={false} /> {prevQuestion.title}
+                      </a>
+                  ) : (
+                      <a>
+                        <DoubleLeftOutlined />
+                      </a>
+                  )}
+                </div>
 
-              <div style={{marginBottom:16}}/>
-              <Comments questionId={question.id} />
+                {/* 下一题 */}
+                <div
+                    style={{
+                      position: 'absolute',
+                      right: 30,
+                      top: 0,
+                    }}
+                >
+                  {nextQuestion ? (
+                      <a href={`/bank/${questionBankId}/question/${nextQuestion.id}`}>
+                        {nextQuestion.title} <DoubleRightOutlined />
+                      </a>
+                  ) : (
+                      <a>
+                        <DoubleRightOutlined disabled={false} />
+                      </a>
+                  )}
+                </div>
+              </div>
             </Card>
-          </div>
 
+            <div style={{marginBottom:16}}/>
+            <Comments questionId={question.id} />
+          </div>
 
         </Content>
       </Flex>

@@ -24,7 +24,7 @@ const Loginforbidden: React.FC<Props> = ({questionBankId, questionid}) => {
         }
     }
     return (
-        <div style={{width: "1100px"}}>
+        <div style={{width: "1200px"}}>
             <Card
                 style={{
                     textAlign: "center",
