@@ -94,7 +94,7 @@ const QuestionRequestForm: React.FC<Props> = ({
       isVip: membership === "true" ? 0 : membership === "false" ? 1 : undefined,
       tags: tags.length > 0 ? tags : undefined,
       diffity: difficulty || undefined,
-      pageSize:199
+      pageSize:500
     };
     try {
       const res = await searchQuestionVoByPageUsingPost(request);
