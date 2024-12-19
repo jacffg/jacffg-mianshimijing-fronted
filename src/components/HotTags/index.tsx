@@ -58,7 +58,7 @@ const HotTags = (props: Props) => {
           dataSource={hotTagsVOs}
           renderItem={(item) => (
             <List.Item
-              onClick={() => router.push(`/questions?tag=${item}`)}
+              onClick={() => router.push(`/questions?tag=${item.tag}`)}
               className="hoverable-item"
             >
               <div>

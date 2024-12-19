@@ -3,8 +3,9 @@ import axios from "axios";
 // 创建 Axios 示例
 const DEV_BASE_URL = "http://localhost:8101";
 const PROD_BASE_URL = "http://124.222.153.246";
+const PROD_BASE_URL2 = "http://mianshimijing.icu";
 const myAxios = axios.create({
-  baseURL: PROD_BASE_URL,
+  baseURL: PROD_BASE_URL2,
   timeout: 20000,
   withCredentials: true,
 });

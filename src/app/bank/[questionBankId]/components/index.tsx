@@ -101,58 +101,93 @@ export default function BankPageClient({ bank }: { bank: any }) {
         onCancel={() => setModalVisible(false)}
         footer={null}
         centered
-        bodyStyle={{ padding: 24 }}
+        bodyStyle={{
+          padding: 24,
+          borderRadius: "12px",
+        }}
       >
         <div style={{ textAlign: "left" }}>
           {/* 标题部分 */}
-          <div style={{ textAlign: "center", marginBottom: 16 }}>
+          <div style={{ textAlign: "center", marginBottom: 24 }}>
             <span
-              style={{ fontSize: 20, fontWeight: "bold", color: "#3c3c3c" }}
+              style={{
+                fontSize: 24,
+                fontWeight: "bold",
+                color: "#1f1f1f", // 更加醒目的标题颜色
+              }}
             >
               🔗 分享此题库
             </span>
           </div>
-          <div style={{ marginBottom: 16, borderTop: "1px solid #f0f0f0" }} />
+
+          {/* 分隔线 */}
+          <div style={{ marginBottom: 16, borderTop: "1px solid #e4e4e4" }} />
 
           {/* 分享链接部分 */}
-          <div style={{ marginBottom: 24 }}>
-            <span style={{ fontSize: 16, fontWeight: 500, color: "#595959" }}>
+          <div style={{ marginBottom: 32 }}>
+            <span
+              style={{
+                fontSize: 18,
+                fontWeight: 600,
+                color: "#595959",
+                display: "block",
+                marginBottom: 8,
+              }}
+            >
               分享链接：
             </span>
             <div
-              style={{ display: "flex", alignItems: "center", marginTop: 8 }}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                backgroundColor: "#ffffff", // 白色背景让内容突出
+                padding: "10px 16px",
+                borderRadius: "8px",
+                boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)", // 轻微阴影让内容有层次感
+              }}
             >
-              <Input
-                value={window.location.href}
-                readOnly
-                style={{ flex: 1, marginRight: 8 }}
-              />
-              <Button
-                type="primary"
-                onClick={handleCopy}
-                style={{ padding: "0 16px" }}
+              <Paragraph
+                copyable
+                style={{
+                  margin: 0,
+                  flex: 1,
+                  color: "#333",
+                  fontSize: 14,
+                  wordBreak: "break-all",
+                }}
               >
-                复制
-              </Button>
+                {window.location.href}
+              </Paragraph>
             </div>
           </div>
 
-          <div style={{ margin: "12px 0", borderTop: "1px solid #f0f0f0" }} />
+          {/* 分隔线 */}
+          <div style={{ margin: "24px 0", borderTop: "1px solid #e4e4e4" }} />
 
           {/* 二维码部分 */}
           <div>
             <div
               style={{
-                fontSize: 16,
-                fontWeight: 500,
+                fontSize: 18,
+                fontWeight: 600,
                 color: "#595959",
                 marginBottom: 16,
               }}
             >
               二维码分享：
             </div>
-            <div style={{ textAlign: "center" }}>
-              <QRCode value={window.location.href} size={200} />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                backgroundColor: "#ffffff", // 二维码区域白色背景
+                padding: 16,
+                borderRadius: "12px",
+                boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
+              }}
+            >
+              <QRCode value={window.location.href} size={180} />
             </div>
           </div>
         </div>
