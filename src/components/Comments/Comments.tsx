@@ -40,7 +40,8 @@ const Comments: React.FC<Props> = (props) => {
   const { questionId } = props;
   // 使用 useState 来存储 TextArea 的输入值
   const [commentText, setCommentText] = useState("");
-  const [showCount, setShowCount] = useState(3); // 默认显示 4 条
+  // 初始化状态为一个新的空 Map
+  const [showCount, setShowCount] = useState(new Map());
   const [replieCommentText, setReplieCommentText] = useState("");
   const [placeholder, setPlaceholder] = useState("");
   const [parentId, setParentId] = useState();
@@ -56,12 +57,17 @@ const Comments: React.FC<Props> = (props) => {
     setReplieCommentText(e.target.value); // 更新输入框的值
   };
   // 点击展开按钮显示所有回复
-  const handleExpand = () => {
-    setShowCount(comments?.length); // 显示所有回复
+
+  const handleExpand = (id, length) => {
+    const newShowCount = new Map(showCount);
+    newShowCount.set(id, length); // 收起到前3条
+    setShowCount(newShowCount);
   };
-  // 点击收起按钮，显示前 4 条
-  const handleCollapse = () => {
-    setShowCount(3); // 只显示 4 条
+  // 点击收起按钮，显示前 3 条
+  const handleCollapse = (id) => {
+    const newShowCount = new Map(showCount);
+    newShowCount.set(id, 3); // 收起到前3条
+    setShowCount(newShowCount);
   };
 
   //获取评论
@@ -74,6 +80,13 @@ const Comments: React.FC<Props> = (props) => {
         questionId: questionId,
       });
       setCommnets(res?.data || []);
+      // 遍历 res.data 并初始化每个 id 对应的 value 为 3
+      const initialMap = res.data.reduce((map, item) => {
+        return map.set(item.id, 3); // 每个评论默认显示 3 条子项
+      }, new Map());
+
+      // 设置状态
+      setShowCount(initialMap);
     } catch (e) {
       message.error("获取题目评论失败" + e.message);
     }
@@ -237,7 +250,7 @@ const Comments: React.FC<Props> = (props) => {
                     style={{
                       marginLeft: 4,
                       marginTop: -35,
-                        height: 20,
+                      height: 20,
                     }}
                   >
                     {replie.user?.userRole !== ACCESS_ENUM.NOT_LOGIN &&
@@ -364,7 +377,9 @@ const Comments: React.FC<Props> = (props) => {
             <Avatar
               src={commet.user?.userAvatar || "/assets/logo.png"}
               size={40}
-              style={{ marginTop: 8 }}
+              style={{
+                marginTop: 8,
+              }}
             />
           }
           title={
@@ -377,12 +392,15 @@ const Comments: React.FC<Props> = (props) => {
                   style={{
                     marginBottom: 0,
                     marginLeft: 10,
-                    marginTop: 10,
+                    marginTop: 5,
+                      height: 40,
+                    // borderStyle: "solid",
+                    // borderColor: "red",
                   }}
                 >
                   {commet.user?.userName}
                 </Title>
-                <div style={{ marginTop: 11 }}>
+                <div style={{ marginTop: -10 }}>
                   {commet.user?.userRole != ACCESS_ENUM.NOT_LOGIN &&
                     commet.user?.userRole != ACCESS_ENUM.USER && (
                       <VIPTag size={6} padding={1.5} />
@@ -496,22 +514,34 @@ const Comments: React.FC<Props> = (props) => {
                         gutter: 10, // 设置行间距为 10px
                         column: 1, // 每行显示 1 列
                       }}
-                      dataSource={commet.replies?.slice(0, showCount)} // 仅显示指定数量的回复
+                      dataSource={commet.replies?.slice(
+                        0,
+                        showCount.get(commet.id),
+                      )} // 仅显示指定数量的回复
                       renderItem={(item) => (
                         <List.Item>{RepliesView(item)}</List.Item>
                       )}
                     />
-                    {commet?.replies?.length > 3 && showCount === 3 && (
-                      <Button type="link" onClick={handleExpand}>
-                        展开全部
-                      </Button>
-                    )}
-
-                    {commet?.replies?.length > 3 && showCount > 3 && (
-                      <Button type="link" onClick={handleCollapse}>
-                        收起
-                      </Button>
-                    )}
+                    {commet?.replies?.length > 3 &&
+                      showCount.get(commet.id) == 3 && (
+                        <Button
+                          type="link"
+                          onClick={() =>
+                            handleExpand(commet.id, commet.replies.length)
+                          }
+                        >
+                          展开全部
+                        </Button>
+                      )}
+                    {commet?.replies?.length > 3 &&
+                      showCount.get(commet.id) > 3 && (
+                        <Button
+                          type="link"
+                          onClick={() => handleCollapse(commet.id)}
+                        >
+                          收起
+                        </Button>
+                      )}
                   </div>
                 )}
               </div>
@@ -592,8 +622,8 @@ const Comments: React.FC<Props> = (props) => {
           <Card
             style={{
               border: "none", // 去掉卡片的边框
-               // borderColor:"red",
-               // borderStyle:"solid",
+              // borderColor:"red",
+              // borderStyle:"solid",
             }}
             // bodyStyle={{
             //     paddingTop: 0, // 缩短上方的内边距
