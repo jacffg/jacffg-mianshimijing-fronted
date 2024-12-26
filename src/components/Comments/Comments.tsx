@@ -80,13 +80,16 @@ const Comments: React.FC<Props> = (props) => {
         questionId: questionId,
       });
       setCommnets(res?.data || []);
-      // 遍历 res.data 并初始化每个 id 对应的 value 为 3
-      const initialMap = res.data.reduce((map, item) => {
-        return map.set(item.id, 3); // 每个评论默认显示 3 条子项
-      }, new Map());
+      if (res.data){
+          // 遍历 res.data 并初始化每个 id 对应的 value 为 3
+          const initialMap = res.data.reduce((map, item) => {
+              return map.set(item.id, 3); // 每个评论默认显示 3 条子项
+          }, new Map());
 
-      // 设置状态
-      setShowCount(initialMap);
+          // 设置状态
+          setShowCount(initialMap);
+      }
+
     } catch (e) {
       message.error("获取题目评论失败" + e.message);
     }
